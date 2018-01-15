@@ -1,0 +1,10 @@
+Package: BillioR
+Type: Package
+Title: Billionaire Startup
+Version: 1.0
+Date: 2018-01-15
+Author: Pooya Chaghoei
+Maintainer: Pooya Chaghoei <pooya1991@gmail.com>
+Description: This package is a quantitive finance tool for Iran Stock Market.
+License: Apache2
+LazyData: true
