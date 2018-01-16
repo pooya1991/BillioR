@@ -1,7 +1,7 @@
-library(jsonlite)
-library(zoo)
-library(xts)
-library(TTR)
+require(jsonlite)
+require(zoo)
+require(xts)
+require(TTR)
 
 
 Indicator <- function(share,FUN,n,m,p,q){
@@ -9,7 +9,7 @@ Indicator <- function(share,FUN,n,m,p,q){
   lin <- paste0(url,share,sep = "")
   vv <- fromJSON(lin)
   if(vv[[1]][[1]] == 0){
-    cc <- vv[[1]][[3]]
+    cc <- vv[[1]][[3]]=
     cc <- as.data.frame(sapply(cc, as.numeric))
     tar <- as.Date(as.character(cc[,8]),"%Y%m%d")
     bb <- xts(cc[,1:7],tar)
@@ -70,7 +70,7 @@ Indicator <- function(share,FUN,n,m,p,q){
       result <- as.data.frame(result)
     }else{
       ErrorCode <- 1
-      ErrorDetail <- "Cannot Comput"
+      ErrorDetail <- "Cannot Compute"
       result <- "Nothing"
     }
   }else{
