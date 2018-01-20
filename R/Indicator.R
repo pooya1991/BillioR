@@ -66,8 +66,15 @@ Indicator <- function(share,FUN,n,m,p,q){
       ErrorCode <- 0
       ErrorDetail <- "NO Error"
       result <- result[complete.cases(result),]
+      n <- dim(result)[1]
+      date <- index(result)
       result <- as.data.frame(result)
-      data <- split(result, seq(nrow(result)))
+      row.names(result) <- NULL
+      nat <- list()
+      for(i in 1:n){
+        nat[[i]] <- list(date[i],result[i,])
+        names(nat[[i]]) <- c("Date","Data")
+      }
     }else{
       ErrorCode <- 1
       ErrorDetail <- "Cannot Compute"
@@ -78,5 +85,5 @@ Indicator <- function(share,FUN,n,m,p,q){
     ErrorDetail <- vv[[1]][[2]]
     result <- "Nothing"
   }
-  list(ErrorCode,ErrorDetail,data)
+  list(ErrorCode,ErrorDetail,nat)
 }
