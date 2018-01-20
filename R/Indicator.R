@@ -79,6 +79,5 @@ Indicator <- function(share,FUN,n,m,p,q){
     result <- "Nothing"
   }
   RES <-list(ErrorCode,ErrorDetail,result)
-  names(RES) <- c("Error","Error_Details","Data")
-  toJSON(RES)
+  RES
 }
