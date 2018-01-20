@@ -66,9 +66,8 @@ Indicator <- function(share,FUN,n,m,p,q){
       ErrorCode <- 0
       ErrorDetail <- "NO Error"
       result <- result[complete.cases(result),]
-      date <- index(result)
       result <- as.data.frame(result)
-      row.names(result) <- NULL
+      date <- row.names(result)
       data <- list(date,result)
     }else{
       ErrorCode <- 1
