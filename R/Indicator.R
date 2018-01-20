@@ -78,6 +78,5 @@ Indicator <- function(share,FUN,n,m,p,q){
     ErrorDetail <- vv[[1]][[2]]
     result <- "Nothing"
   }
-  RES <-list(ErrorCode,ErrorDetail,result)
-  RES
+  list(ErrorCode,ErrorDetail,result)
 }
