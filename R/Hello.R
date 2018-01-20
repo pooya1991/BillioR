@@ -1,3 +1,5 @@
-Hello <- function(){
-  "Hello World"
+require(jsonlite)
+
+Hello <- function(x){
+  toJSON(x)
 }
