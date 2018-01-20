@@ -1,6 +1,6 @@
 Indicator <- function(share,FUN,n,m,p,q){
   url <- "http://billionet.us/msa/api/stockhistory/065aa4a5c4c6f6a44fea1645ad9cc2c6/"
-  lin <- paste0(url,share,sep = "")
+  lin <- paste(url,share,sep = "")
   library(jsonlite)
   library(zoo)
   library(xts)
@@ -65,6 +65,7 @@ Indicator <- function(share,FUN,n,m,p,q){
     if(dim(result)[1] > 10){
       ErrorCode <- 0
       ErrorDetail <- "NO Error"
+      result <- result[complete.cases(result),]
       result <- as.data.frame(result)
     }else{
       ErrorCode <- 1
