@@ -1,12 +1,10 @@
-library(jsonlite)
-library(zoo)
-library(xts)
-library(TTR)
-
-
 Indicator <- function(share,FUN,n,m,p,q){
   url <- "http://billionet.us/msa/api/stockhistory/065aa4a5c4c6f6a44fea1645ad9cc2c6/"
   lin <- paste0(url,share,sep = "")
+  library(jsonlite)
+  library(zoo)
+  library(xts)
+  library(TTR)
   vv <- fromJSON(lin)
   if(vv[[1]][[1]] == 0){
     cc <- vv[[1]][[3]]
