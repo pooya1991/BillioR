@@ -67,8 +67,7 @@ Indicator <- function(share,FUN,n,m,p,q){
       ErrorDetail <- "NO Error"
       result <- result[complete.cases(result),]
       result <- as.data.frame(result)
-      date <- row.names(result)
-      data <- list(date,result)
+      data <- split(result, seq(nrow(result)))
     }else{
       ErrorCode <- 1
       ErrorDetail <- "Cannot Compute"
