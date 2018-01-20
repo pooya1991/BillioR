@@ -1,7 +1,7 @@
-require(jsonlite)
-require(zoo)
-require(xts)
-require(TTR)
+library(jsonlite)
+library(zoo)
+library(xts)
+library(TTR)
 
 
 Indicator <- function(share,FUN,n,m,p,q){
