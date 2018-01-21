@@ -40,6 +40,7 @@ Backtest <- function(x){
   }
   Rels <- v$relations
   n <- length(Rels)
+  type <- vector()
   Rules <- vector()
   for (i in 1:n) {
     nam <- paste(Rels[[i]][[2]],Rels[[i]][1],sep = "")
