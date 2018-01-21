@@ -67,12 +67,19 @@ Indicator <- function(share,FUN,n,m,p,q){
       ErrorDetail <- "NO Error"
       result <- result[complete.cases(result),]
       n <- dim(result)[1]
+      m <- dim(result)[2]
       date <- index(result)
       result <- as.data.frame(result)
       row.names(result) <- NULL
       nat <- list()
       for(i in 1:n){
-        nat[[i]] <- list(date[i],result[i,])
+        if(m == 1){
+          q <- list(result[i,])
+          names(q) <- FUN
+        }else{
+          q <- result[i,]
+        }
+        nat[[i]] <- list(date[i],q)
         names(nat[[i]]) <- c("Date","Data")
       }
     }else{
