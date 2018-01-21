@@ -74,9 +74,9 @@ Indicator <- function(share,FUN,n,m,p,q){
       nat <- list()
       for(i in 1:n){
         if(m == 1){
-          a <- result[i,]
-          names(a) <- FUN
-          q <- list(a)
+          a <- data.frame(result[i,])
+          colnames(a) <- FUN
+          q <- a
         }else{
           q <- result[i,]
         }
