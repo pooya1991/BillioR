@@ -101,12 +101,15 @@ Backtest <- function(x){
     Date <- as.Date(index(BUY)[Bact[i]])
     Action <- "B"
     Price <- C[Date]
-    Ret <- NA
-    RESULTS[[t]] <- data.frame(Date,Action,Price,Ret)
+    names(Price) <- "Price"
+    Return <- NA
+    RESULTS[[t]] <- data.frame(Date,Action,Price,Return)
     Date <- as.Date(index(SELL)[Sact[i]])
     Action <- "S"
     Price <- C[Date]
+    names(Price) <- "Price"
     Ret <- (Price/RESULTS[[t]][,3]) - 1
+    names(Ret) <- "Return"
     RESULTS[[tt]] <- data.frame(Date,Action,Price,Ret)
   }
   RESULTS
