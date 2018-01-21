@@ -1,10 +1,9 @@
-require(jsonlite)
-require(zoo)
-require(xts)
-require(TTR)
-library(quantmod)
-
 Backtest <- function(x){
+  library(jsonlite)
+  library(zoo)
+  library(xts)
+  library(TTR)
+  library(quantmod)
   v <- fromJSON(x)
   StartDate <- v$start_date
   EndDtae <- v$end_date
