@@ -4,6 +4,7 @@ Backtest <- function(x){
   library(xts)
   library(TTR)
   library(quantmod)
+  x <- as.character(x)
   v <- fromJSON(x)
   StartDate <- v$start_date
   EndDtae <- v$end_date
