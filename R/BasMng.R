@@ -4,6 +4,7 @@ BasMng <- function(X){
   if(vv[[1]]==0){
     LRebDate <- as.Date(vv[[3]][[1]])
     FRebDate <- as.Date(vv[[3]][[2]])
+    rn <- vv[[3]][[3]]
     t <- as.numeric(Sys.Date() - LRebDate)
     erisk <- RiskNumbers[RiskNumbers[,3]==vv[[3]][[3]],][1,1]
     eret <- RiskNumbers[RiskNumbers[,3]==vv[[3]][[3]],][1,2]
@@ -30,22 +31,49 @@ BasMng <- function(X){
     }
     if(risk_notif[i] == 1){
       if(ret_notif[i]==1){
-        reb[i] <- 0
+        reb <- 0
       }else{
-        reb[i] <- 1
+        reb <- 1
       }
     }else{
       if(ret_notif[i] == 1){
-        reb[i] <- -1
+        reb <- -1
       }else if(ret_notif[i] == -1){
         if(t > 10){
-          reb[i] <- 1
+          reb <- 1
         }else{
-          reb[i] <- 1
+          reb <- 1
         }
       }else{
-        reb[i] <- -1
+        reb <- -1
       }
     }
   }
+  ErrorCode <- 0
+  ErrorDetail <- "No Error"
+  if(reb == -1){
+    Portfolio <- vv[[3]][[4]][,c(1,4)]
+    Rebalance <- reb
+    data <- list(Rebalance,Portfolio)
+  }else if(reb == 0){
+    Portfolio <- vv[[3]][[4]][,c(1,4)]
+    Rebalance <- reb
+    data <- list(Rebalance,Portfolio)
+  }else{
+    Portfolio <- Bascket(rn = rn)
+    Rebalance <- reb
+    data <- list(Rebalance,Portfolio)
+  }
+  ErrorCode <- 0
+  ErrorDetail <- "No Error"
+  list(ErrorCode,ErrorDetail,data)
 }
+
+
+
+
+
+
+
+
+
