@@ -2,6 +2,7 @@ BasMng <- function(X){
   library(jsonlite)
   x <- as.character(X)
   vv <- fromJSON(x)
+  reb <- 0
   if(vv[[1]]==0){
     LRebDate <- as.Date(vv[[3]][[1]])
     FRebDate <- as.Date(vv[[3]][[2]])
