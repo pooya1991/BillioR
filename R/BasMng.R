@@ -14,7 +14,7 @@ BasMng <- function(X){
     risk1 <- -sd(Ret)
     risk2 <- (min(Ret) - 1) * 100
     dd <- dim(Asset)[1]
-    pd <- dd/120
+    pd <- dd/12
     pret <- ((1+eret/100)^pd) * 100
     current <- Ret[dd]
     if(erisk < risk){
