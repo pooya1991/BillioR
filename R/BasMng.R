@@ -1,4 +1,5 @@
 BasMng <- function(X){
+  library(jsonlite)
   x <- as.character(X)
   vv <- fromJSON(x)
   if(vv[[1]]==0){
