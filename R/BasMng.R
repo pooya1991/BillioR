@@ -51,8 +51,6 @@ BasMng <- function(X){
       }
     }
   }
-  ErrorCode <- 0
-  ErrorDetail <- "No Error"
   if(reb == -1){
     Portfolio <- vv[[3]][[4]][,c(1,4)]
     Rebalance <- reb
