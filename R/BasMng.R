@@ -52,10 +52,12 @@ BasMng <- function(X){
   }
   if(reb == -1){
     Portfolio <- vv[[4]][,c(1,4)]
+    Portfolio <- split(Portfolio, seq(nrow(Portfolio)))
     Rebalance <- reb
     data <- list(Rebalance,Portfolio)
   }else if(reb == 0){
     Portfolio <- vv[[4]][,c(1,4)]
+    Portfolio <- split(Portfolio, seq(nrow(Portfolio)))
     Rebalance <- reb
     data <- list(Rebalance,Portfolio)
   }else{
@@ -67,6 +69,7 @@ BasMng <- function(X){
     y <- y[with(y, order(-strength)), ]
     id <- y[1,1]
     Portfolio <- Portfolios[[id]][,-dim(Portfolios[[id]])]
+    Portfolio <- split(Portfolio, seq(nrow(Portfolio)))
     Rebalance <- reb
     data <- list(Rebalance,Portfolio)
   }
