@@ -1,6 +1,6 @@
 BasMng <- function(X){
-  library(jsonlite)
   x <- as.character(X)
+  library(jsonlite)
   vv <- fromJSON(x)
   reb <- 0
   if(vv[[1]]==0){
