@@ -50,6 +50,7 @@ BasMng <- function(X){
       reb <- -1
     }
   }
+  reb = 1
   if(reb == -1){
     Portfolio <- vv[[4]][,c(1,4)]
     Rebalance <- reb
@@ -65,7 +66,7 @@ BasMng <- function(X){
     colnames(PR) <- nam
     y <- PR[PR[,4] == rn,]
     y <- y[with(y, order(-strength)), ]
-    id <- y[1,1]
+    id <- y[2,1]
     Portfolio <- Portfolios[[id]][,-dim(Portfolios[[id]])]
     Rebalance <- reb
     data <- list(Rebalance,Portfolio)
@@ -74,12 +75,3 @@ BasMng <- function(X){
   Error_detail <- "No Error"
   list(Error,Error_detail,data)
 }
-
-
-
-
-
-
-
-
-
