@@ -3,13 +3,13 @@ BasMng <- function(X){
   library(jsonlite)
   vv <- fromJSON(x)
   reb <- 0
-  LRebDate <- as.Date(vv[[1]])
-  FRebDate <- as.Date(vv[[2]])
-  rn <- as.numeric(vv[[3]])
+  LRebDate <- as.Date(vv$rebalance_date)
+  FRebDate <- as.Date(vv$first_rebalance_date)
+  rn <- as.numeric(vv$risk_number)
   t <- as.numeric(Sys.Date() - LRebDate)
   erisk <- RiskNumbers[RiskNumbers[,3]==rn,][1,1]
   eret <- RiskNumbers[RiskNumbers[,3]==rn,][1,2]
-  Asset <- vv[[5]]
+  Asset <- vv$investment
   init_val <- Asset[1,2]
   Ret <- Asset[,2] / init_val
   risk1 <- -sd(Ret-1)
@@ -51,7 +51,7 @@ BasMng <- function(X){
     }
   }
   if(reb == -1){
-    Portfolio <- vv[[4]][,c(1,4)]
+    Portfolio <- vv$portfolio[,c(1,4)]
     Rebalance <- reb
     data <- list(Rebalance,Portfolio)
   }else if(reb == 0){
