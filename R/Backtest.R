@@ -1,4 +1,4 @@
-function (x) 
+Backtest <- function (x) 
 {
   library(jsonlite)
   library(zoo)
