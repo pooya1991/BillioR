@@ -23,11 +23,15 @@ BasMng <- function(X){
   dd <- dim(Asset)[1]
   pd <- dd/120
   pret <- ((1+eret/100)^pd) * 100
-  current <- Ret[1]
-  if(erisk < risk){
-    risk_notif <- 1
-  }else{
+  current <- Ret[1] * 100
+  if(risk == 0){
     risk_notif <- 0
+  }else{
+    if(erisk < risk){
+      risk_notif <- 1
+    }else{
+      risk_notif <- 0
+    }
   }
   if(current > 1.15*pret){
     ret_notif <- 1
