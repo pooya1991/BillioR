@@ -15,6 +15,9 @@ BasMng <- function(X){
   init_val <- Asset[bb,2]
   Ret <- LAsset[,2] / init_val
   risk1 <- -sd(Ret-1)
+  if(is.na(risk1)){
+    risk1 <- 0
+  }
   risk2 <- (min(Ret) - 1) * 100
   risk <- min(risk1,risk2)
   dd <- dim(Asset)[1]
