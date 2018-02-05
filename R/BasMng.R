@@ -10,8 +10,10 @@ BasMng <- function(X){
   erisk <- RiskNumbers[RiskNumbers[,3]==rn,][1,1]
   eret <- RiskNumbers[RiskNumbers[,3]==rn,][1,2]
   Asset <- vv$investment
-  init_val <- Asset[1,2]
-  Ret <- Asset[,2] / init_val
+  bb <- which(as.Date(Asset[,1]) == LRebDate)[1]
+  LAsset <- Asset[1:bb,]
+  init_val <- Asset[bb,2]
+  Ret <- LAsset[,2] / init_val
   risk1 <- -sd(Ret-1)
   risk2 <- (min(Ret) - 1) * 100
   risk <- min(risk1,risk2)
