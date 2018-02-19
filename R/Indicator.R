@@ -71,6 +71,7 @@ Indicator <- function(share,FUN,n,m,p,q){
       date <- index(result)
       result <- as.data.frame(result)
       row.names(result) <- NULL
+      colnames(result) <- gsub("\\.","",colnames(result))
       nat <- list()
       for(i in 1:n){
         if(m == 1){
