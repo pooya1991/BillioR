@@ -5,14 +5,17 @@ Backtest <- function (x)
   library(xts)
   library(TTR)
   library(quantmod)
+  # get the data from PHP
   x <- as.character(x)
   v <- fromJSON(x)
   StartDate <- v$start_date
   EndDtae <- v$end_date
   share <- v$stock
+  # link of downloading historical data of stock
   url <- "http://billionet.us/msa/api/stockhistory/065aa4a5c4c6f6a44fea1645ad9cc2c6/"
   lin <- paste(url, share, sep = "")
   vv <- fromJSON(lin)
+  # convert to xts historical data of the stock
   if (vv[[1]][[1]] == 0) {
     cc <- vv[[1]][[3]]
     cc <- as.data.frame(sapply(cc, as.numeric))
@@ -25,39 +28,45 @@ Backtest <- function (x)
     HL <- bb[, c(2, 3)]
     C <- bb[, 4]
   }
+  # Indicators of the Strategy
   Inds <- v$indicators
   n <- length(Inds)
   for (i in 1:n) {
     m <- length(Inds[[i]]) - 3
-    q <- ""
+    qqq <- ""
     if (m > 1) {
       for (j in 1:m) {
         t <- j + 3
-        q <- paste(q, Inds[[i]][[t]], sep = "")
+        qqq <- paste0(qqq,",", Inds[[i]][[t]], sep = "")
       }
+    }else {
+      qqq <- paste(",",Inds[[i]][[4]])
     }
-    else {
-      q <- Inds[[i]][[4]]
+    if(length(qqq) > 1){
+      qqq <- paste(qqq,collapse="")
     }
-    b <- paste(Inds[[i]][[2]], " <- ", Inds[[i]][[1]], "(C,", 
-               q, ")", sep = "")
+    # proper data of each indicator
+    lll <- which(Indicators_Data[,1] == Inds[[i]][[1]])
+    Da <- as.character(Indicators_Data[lll,2])
+    b <- paste(Inds[[i]][[2]], " <- ", Inds[[i]][[1]], "(",Da,qqq, ")", sep = "")
     eval(parse(text = b))
   }
+  # Get the Relations
   Rels <- v$relations
   n <- length(Rels)
+  # Type of the relations ex. before sell
   type <- vector()
+  # Name of each rull which determine the type and orde
   Rules <- vector()
   for (i in 1:n) {
+    # Type and Order of
     nam <- paste(Rels[[i]][[2]], Rels[[i]][1], sep = "")
     Rules[i] <- nam
     type[i] <- Rels[[i]][[2]]
     q <- Rels[[i]][[3]]
     q[q == "="] <- "=="
     m <- length(q)
-    d <- ""
-    for (j in 1:m) {
-      d <- paste(d, q[j], sep = "")
-    }
+    d <- paste(q,collapse = " ")
     b <- paste(nam, " <- ", d)
     eval(parse(text = b))
   }
@@ -66,12 +75,14 @@ Backtest <- function (x)
     b <- paste(b, ",", Rules[i], sep = "")
   }
   b <- substr(b, 2, nchar(b))
+  # rull is the dataframe of all the relus user made
   b <- paste("rull <- cbind(", b, ")", sep = "")
   eval(parse(text = b))
   Mtype <- unique(type)
   l <- length(Mtype)
   for (i in 1:l) {
     q <- which(type == Mtype[i])
+    # g is the all rull of the same type ex. before sell
     g <- rull[, q]
     k <- dim(g)[2]
     if (k > 1) {
@@ -99,9 +110,29 @@ Backtest <- function (x)
   eval(parse(text = b))
   Bact <- which(BUY)
   Sact <- which(SELL)
+  Sact <- Sact[Sact > Bact[1]]
+  Bact <- Bact[Bact < Sact[length(Sact)]]
   n <- min(length(Bact), length(Sact))
-  Sact <- Sact[1:n]
-  Bact <- Bact[1:n]
+  Act <- matrix(nrow = n,ncol = 2)
+  Act[1,1] <- Bact[1]
+  Act[1,2] <- Sact[1]
+  for (i in 2:n) {
+    t <- i - 1
+    BB <- which(Bact > Act[t,2])
+    if(length(BB) >= 1){
+      BB <- BB[1]
+      Act[i,1] <- Bact[BB]
+      CC <- which(Sact > Act[i,1])
+      if(length(CC) >= 1){
+        CC <- CC[1]
+        Act[i,2] <- Sact[CC]
+      }
+    }
+  }
+  Act <- Act[complete.cases(Act),]
+  Sact <- Act[,2]
+  Bact <- Act[,1]
+  n <- length(Bact)
   RESULTS <- list()
   for (i in 1:n) {
     t <- (2 * i) - 1
