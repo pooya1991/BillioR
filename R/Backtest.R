@@ -50,6 +50,26 @@ Backtest <- function (x)
     Da <- as.character(Indicators_Data[lll,2])
     b <- paste(Inds[[i]][[2]], " <- ", Inds[[i]][[1]], "(",Da,qqq, ")", sep = "")
     eval(parse(text = b))
+    b <- paste("bb <- ncol(",Inds[[i]][[2]],")")
+    eval(parse(text = b))
+    if(bb > 1){
+      b <- paste("nn <- colnames(",Inds[[i]][[2]],")")
+      eval(parse(text = b))
+      nn <- gsub("\\.","",nn)
+      b <- paste("colnames(",Inds[[i]][[2]],") <- nn")
+      eval(parse(text = b))
+      for (j in 1:bb) {
+        b <- paste("mm <- colnames(",Inds[[i]][[2]],")[j]")
+        eval(parse(text = b))
+        nindname <- paste(Inds[[i]][[2]],"_",mm,sep = "")
+        b <- paste(nindname," <- ",Inds[[i]][[2]],"[,j]",sep = "")
+        eval(parse(text = b))
+      }
+    }else{
+      nindname <- paste(Inds[[i]][[2]],"_",Inds[[i]][[1]],sep = "")
+      b <- paste(nindname," <- ",Inds[[i]][[2]],sep = "")
+      eval(parse(text = b))
+    }
   }
   # Get the Relations
   Rels <- v$relations
@@ -65,7 +85,6 @@ Backtest <- function (x)
     type[i] <- Rels[[i]][[2]]
     q <- Rels[[i]][[3]]
     q[q == "="] <- "=="
-    m <- length(q)
     d <- paste(q,collapse = " ")
     b <- paste(nam, " <- ", d)
     eval(parse(text = b))
@@ -86,7 +105,7 @@ Backtest <- function (x)
     g <- rull[, q]
     k <- dim(g)[2]
     if (k > 1) {
-      e <- rowSums(q) == k
+      e <- rowSums(g) == k
     }
     else {
       e <- g
