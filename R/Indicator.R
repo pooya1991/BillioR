@@ -21,7 +21,7 @@ Indicator <- function(share,FUN,n,m,p,q){
            Aroon = result <- aroon(HL,n),
            ATR = result <- ATR(HLC,n),
            BBands = result <- BBands(HLC,n = n,sd = m,maType = p),
-           BBANDS = result <- BBands(HLC,n,m,p),
+           BBANDS = result <- BBands(HLC,n = n,sd = m,maType = p),
            CCI = result <- CCI(HLC,n,m,p),
            chaikinAD = result <- chaikinAD(HLC),
            chaikinVolatility = result <- chaikinVolatility(HL,n),
