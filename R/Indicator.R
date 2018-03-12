@@ -41,7 +41,7 @@ Indicator <- function(share,FUN,n,m,p,q){
            ROC = result <- ROC(C,n),
            rollSFM = result <- rollSFM(C,n),
            RSI = result <- RSI(C,n,m),
-           SAR = result <- SAR(HL,n,m),
+           SAR = result <- SAR(HL,accel =  c(n,m)),
            stoch = result <- stoch(HLC,n,m,p,q),
            TDI = result <- TDI(C,n,m),
            TRIX = result <- TRIX(C,n,m,p),
