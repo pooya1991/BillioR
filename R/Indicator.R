@@ -32,7 +32,7 @@ Indicator <- function(share,FUN,n,m,p,q){
            DPO = result <- DPO(C,n,shift = m,maType = p),
            DVI = result <- DVI(C,n),
            EMV = result <- EMV(HL,V,n,maType = m),
-           KST = result <- KST(C,n,nSig = m,maType = p),
+           KST = result <- KST(C,n = c(n,n,n,floor((3 * n) / 2)),nROC = c(n, n + floor(n/2),2 * n, 2*n + floor(n/2)),nSig = m,maType = p),
            lags = result <- lags(C,n),
            MACD = result <- MACD(C,n,m,p,q),
            MFI = result <- MFI(HLC,n),
