@@ -45,7 +45,7 @@ Indicator <- function(share,FUN,n,m,p,q){
            stoch = result <- stoch(HLC,nFastK = n,nFastD = m,nSlowD = p,maType = q),
            TDI = result <- TDI(C,n,m),
            TRIX = result <- TRIX(C,n,m,p),
-           ultimateOscillator = result <- ultimateOscillator(HLC),
+           ultimateOscillator = result <- ultimateOscillator(HLC,n = c(5, 10, 20), wts = c(4, 2, 1)),
            VHF = result <- VHF(C,n),
            volatility = result <- volatility(OHLC,n),
            williamsAD = result <- williamsAD(HLC),
