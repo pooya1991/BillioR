@@ -29,7 +29,7 @@ Indicator <- function(share,FUN,n,m,p,q){
            CMF = result <- CMF(HLC,V,n),
            CMO = result <- CMO(C,n),
            DonchianChannel = result <- DonchianChannel(HL,n),
-           DPO = result <- DPO(C,n,m,p),
+           DPO = result <- DPO(C,n,shift = m,maType = p),
            DVI = result <- DVI(C,n),
            EMV = result <- EMV(HL,n,m),
            GMMA = result <- GMMA(C),
