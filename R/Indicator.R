@@ -16,16 +16,17 @@ Indicator <- function(share,FUN,n,m,p,q){
     OHLC <- bb[,c(7,2,3,4)]
     HL <- bb[,c(2,3)]
     C <- bb[,4]
+    V <- bb[,6]
     switch(FUN,
            ADX = result <- ADX(HLC,n),
            Aroon = result <- aroon(HL,n),
            ATR = result <- ATR(HLC,n),
            BBands = result <- BBands(HLC,n = n,sd = m,maType = p),
-           CCI = result <- CCI(HLC,n,m,p),
-           chaikinAD = result <- chaikinAD(HLC),
+           CCI = result <- CCI(HLC,n = n,maType = p,m),
+           chaikinAD = result <- chaikinAD(HLC,V),
            chaikinVolatility = result <- chaikinVolatility(HL,n),
            CLV = result <- CLV(HLC),
-           CMF = result <- CMF(HLC,n),
+           CMF = result <- CMF(HLC,V,n),
            CMO = result <- CMO(C,n),
            DonchianChannel = result <- DonchianChannel(HL,n),
            DPO = result <- DPO(C,n,m,p),
