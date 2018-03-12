@@ -35,7 +35,7 @@ Indicator <- function(share,FUN,n,m,p,q){
            KST = result <- KST(C,n = c(n,n,n,floor((3 * n) / 2)),nROC = c(n, n + floor(n/2),2 * n, 2*n + floor(n/2)),nSig = m,maType = p),
            lags = result <- lag(C,n),
            MACD = result <- MACD(C,n,m,p,q),
-           MFI = result <- MFI(HLC,n),
+           MFI = result <- MFI(HLC,V,n),
            OBV = result <- OBV(C),
            Pbands = result <- PBands(C,n,m,p),
            ROC = result <- ROC(C,n),
