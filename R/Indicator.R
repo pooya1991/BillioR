@@ -31,7 +31,7 @@ Indicator <- function(share,FUN,n,m,p,q){
            DonchianChannel = result <- DonchianChannel(HL,n),
            DPO = result <- DPO(C,n,shift = m,maType = p),
            DVI = result <- DVI(C,n),
-           EMV = result <- EMV(HL,n,m),
+           EMV = result <- EMV(HL,V,n,maType = m),
            GMMA = result <- GMMA(C),
            KST = result <- KST(C,n,m,p),
            lags = result <- lags(C,n),
