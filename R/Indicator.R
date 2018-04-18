@@ -17,6 +17,7 @@ Indicator <- function(share,FUN,n,m,p,q){
     HL <- bb[,c(2,3)]
     C <- bb[,4]
     V <- bb[,6]
+    vv <- bb[,5]
     switch(FUN,
            ADX = result <- ADX(HLC,n),
            Aroon = result <- aroon(HL,n),
