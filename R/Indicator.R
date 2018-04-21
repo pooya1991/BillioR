@@ -12,6 +12,13 @@ Indicator <- function(share,FUN,n,m,p,q){
     tar <- as.Date(as.character(cc[,8]),"%Y%m%d")
     bb <- xts(cc[,1:7],tar)
     colnames(bb) <- c("First","High","Low","Close","Value","Volume","Open")
+    First <- bb[,1]
+    High <- bb[,2]
+    Low <- bb[,3]
+    Close <- bb[,4]
+    Value <- bb[,5]
+    Volume <- bb[,6]
+    Open <- bb[,7]
     HLC <- bb[,c(2,3,4)]
     OHLC <- bb[,c(7,2,3,4)]
     HL <- bb[,c(2,3)]
@@ -34,7 +41,7 @@ Indicator <- function(share,FUN,n,m,p,q){
            DVI = result <- DVI(C,n),
            EMV = result <- EMV(HL,V,n,maType = m),
            KST = result <- KST(C,n = c(n,n,n,floor((3 * n) / 2)),nROC = c(n, n + floor(n/2),2 * n, 2*n + floor(n/2)),nSig = m,maType = p),
-           lags = result <- lag(bb[,m],n),
+           lags = result <- lag(m,n),
            MACD = result <- MACD(C,n,m,p,q),
            MFI = result <- MFI(HLC,V,n),
            OBV = result <- OBV(C,V),
