@@ -1,4 +1,4 @@
-Behgozin <- function(x,m,n,o){
+Behgozin <- function(x,s,r){
   library(jsonlite)
   library(zoo)
   library(xts)
@@ -7,7 +7,7 @@ Behgozin <- function(x,m,n,o){
   # get the data from PHP
   x <- as.character(x)
   v <- fromJSON(x)
-  EndDtae <- Sys.Date()
-  StartDate <- as.Date(EndDate - 180)
+  EndDate <- Sys.Date()
+  StartDate <- as.Date(EndDate - 182)
   share <- v$stock
 }
