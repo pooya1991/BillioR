@@ -1,4 +1,5 @@
-Behgozin <- function(x,s,r){
+Backtest <- function (x) 
+{
   library(jsonlite)
   library(zoo)
   library(xts)
@@ -7,9 +8,10 @@ Behgozin <- function(x,s,r){
   # get the data from PHP
   x <- as.character(x)
   v <- fromJSON(x)
-  EndDate <- Sys.Date()
-  StartDate <- as.Date(EndDate - 182)
+  StartDate <- v$start_date
+  EndDtae <- v$end_date
   share <- v$stock
+  # link of downloading historical data of stock
   url <- "http://billionet.us/msa/api/stockhistory/065aa4a5c4c6f6a44fea1645ad9cc2c6/"
   lin <- paste(url, share, sep = "")
   vv <- fromJSON(lin)
