@@ -1,4 +1,4 @@
-Backtest <- function (x) 
+Behgozin <- function (x) 
 {
   library(jsonlite)
   library(zoo)
@@ -153,6 +153,8 @@ Backtest <- function (x)
   Bact <- Act[,1]
   n <- length(Bact)
   RESULTS <- list()
+  suc <- 0
+  cumRet <- 1
   for (i in 1:n) {
     t <- (2 * i) - 1
     tt <- 2 * i
@@ -167,8 +169,15 @@ Backtest <- function (x)
     Price <- C[Date]
     names(Price) <- "Price"
     Ret <- (Price/RESULTS[[t]][, 3]) - 1
+    if(Ret > 0.015){
+      suc <- suc + 1
+    }
+    cumRet <- cumRet * (as.numeric(Ret) + 0.985)
     names(Ret) <- "Return"
     RESULTS[[tt]] <- data.frame(Date, Action, Price, Ret)
   }
-  RESULTS
+  successRate <- suc / n
+  nat <- list(successRate,as.numeric(cumRet - 1),RESULTS)
+  names(nat) <- c("Success Rate","Cumulative Return","Results")
+  nat
 }
