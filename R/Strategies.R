@@ -113,9 +113,9 @@ Strategies <- function (x)
     b <- paste(Mtype[i], " <- e", sep = "")
     eval(parse(text = b))
   }
-  BuySig <- cbind(as.xts(Next(beforsend, 1)), send)
+  BuySig <- cbind(as.xts(lag(beforsend, 1)), send)
   BuySig <- BuySig[complete.cases(BuySig), ]
-  SellSig <- cbind(as.xts(Next(beforbuy, 1)), buy)
+  SellSig <- cbind(as.xts(lag(beforbuy, 1)), buy)
   SellSig <- SellSig[complete.cases(SellSig), ]
   BUY <- rowSums(BuySig) == 2
   BUY <- xts(BUY, index(BuySig))
