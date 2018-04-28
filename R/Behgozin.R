@@ -176,7 +176,7 @@ Behgozin <- function (x)
     RESULTS[[tt]] <- data.frame(Date, Action, Price, Ret)
   }
   successRate <- suc / n
-  nat <- list(as.character(successRate),as.character(as.numeric(cumRet - 1)),RESULTS)
-  names(nat) <- c("Success Rate","Cumulative Return","Results")
+  nat <- list(successRate,as.numeric(cumRet - 1),RESULTS)
+  names(nat) <- c("SuccessRate","CumulativeReturn","Results")
   nat
 }
