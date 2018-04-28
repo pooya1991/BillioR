@@ -32,15 +32,14 @@ Behgozin <- function (x)
   Inds <- v$indicators
   n <- length(Inds)
   for (i in 1:n) {
-    m <- length(Inds[[i]]) - 3
+    m <- nrow(Inds[[i]][[4]])
     qqq <- ""
     if (m > 1) {
       for (j in 1:m) {
-        t <- j + 3
-        qqq <- paste0(qqq,",", Inds[[i]][[t]], sep = "")
+        qqq <- paste0(qqq,",", Inds[[i]][[4]][j,1], sep = "")
       }
     }else {
-      qqq <- paste(",",Inds[[i]][[4]])
+      qqq <- paste(",",Inds[[i]][[4]][1,1])
     }
     if(length(qqq) > 1){
       qqq <- paste(qqq,collapse="")
