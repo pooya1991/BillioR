@@ -32,15 +32,14 @@ Backtest <- function (x)
   Inds <- v$indicators
   n <- length(Inds)
   for (i in 1:n) {
-    m <- length(Inds[[i]]) - 3
+    m <- nrow(Inds[[i]][[4]])
     qqq <- ""
     if (m > 1) {
       for (j in 1:m) {
-        t <- j + 3
-        qqq <- paste0(qqq,",", Inds[[i]][[t]], sep = "")
+        qqq <- paste0(qqq,",", Inds[[i]][[4]][j,1], sep = "")
       }
     }else {
-      qqq <- paste(",",Inds[[i]][[4]])
+      qqq <- paste(",",Inds[[i]][[4]][1,1])
     }
     if(length(qqq) > 1){
       qqq <- paste(qqq,collapse="")
@@ -153,6 +152,8 @@ Backtest <- function (x)
   Bact <- Act[,1]
   n <- length(Bact)
   RESULTS <- list()
+  suc <- 0
+  cumRet <- 1
   for (i in 1:n) {
     t <- (2 * i) - 1
     tt <- 2 * i
@@ -167,8 +168,15 @@ Backtest <- function (x)
     Price <- C[Date]
     names(Price) <- "Price"
     Ret <- (Price/RESULTS[[t]][, 3]) - 1
+    if(Ret > 0.015){
+      suc <- suc + 1
+    }
+    cumRet <- cumRet * (as.numeric(Ret) + 0.985)
     names(Ret) <- "Return"
     RESULTS[[tt]] <- data.frame(Date, Action, Price, Ret)
   }
-  RESULTS
+  successRate <- suc / n
+  nat <- list(successRate,as.numeric(cumRet - 1),RESULTS)
+  names(nat) <- c("SuccessRate","CumulativeReturn","Results")
+  nat
 }
