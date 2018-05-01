@@ -21,8 +21,7 @@ Backtest <- function (x)
     cc <- as.data.frame(sapply(cc, as.numeric))
     tar <- as.Date(as.character(cc[, 8]), "%Y%m%d")
     bb <- xts(cc[, 1:7], tar)
-    colnames(bb) <- c("First", "High", "Low", "Close", "Value", 
-                      "Volume", "Open")
+    colnames(bb) <- c("First", "High", "Low", "Close", "Value", "Volume", "Open")
     HLC <- bb[, c(2, 3, 4)]
     OHLC <- bb[, c(7, 2, 3, 4)]
     HL <- bb[, c(2, 3)]
