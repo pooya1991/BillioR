@@ -19,45 +19,94 @@ Behgozin <- function (x)
   if (vv[[1]][[1]] == 0) {
     cc <- vv[[1]][[3]]
     cc <- as.data.frame(sapply(cc, as.numeric))
-    tar <- as.Date(as.character(cc[, 8]), "%Y%m%d")
-    bb <- xts(cc[, 1:7], tar)
-    colnames(bb) <- c("First", "High", "Low", "Close", "Value", 
-                      "Volume", "Open")
-    HLC <- bb[, c(2, 3, 4)]
-    OHLC <- bb[, c(7, 2, 3, 4)]
-    HL <- bb[, c(2, 3)]
-    C <- bb[, 4]
+    tar <- as.Date(as.character(cc[,8]),"%Y%m%d")
+    bb <- xts(cc[,1:7],tar)
+    colnames(bb) <- c("First","High","Low","Close","Value","Volume","Open")
+    HLC <- bb[,c(2,3,4)]
+    OHLC <- bb[,c(7,2,3,4)]
+    HL <- bb[,c(2,3)]
+    C <- bb[,4]
+    V <- bb[,6]
   }
+  # Indicators function
+  Indis <- function(bb,FUN,n,m,p,q){
+      switch(FUN,
+             ADX = result <- ADX(bb[,c(2,3,4)],n),
+             Aroon = result <- aroon(bb[,c(2,3)],n),
+             ATR = result <- ATR(bb[,c(2,3,4)],n),
+             BBands = result <- BBands(bb[,c(2,3,4)],n = n,sd = m,maType = p),
+             CCI = result <- CCI(bb[,c(2,3,4)],n = n,maType = p,m),
+             chaikinAD = result <- chaikinAD(bb[,c(2,3,4)],bb[,6]),
+             chaikinVolatility = result <- chaikinVolatility(bb[,c(2,3)],n),
+             CLV = result <- CLV(bb[,c(2,3,4)]),
+             CMF = result <- CMF(bb[,c(2,3,4)],bb[,6],n),
+             CMO = result <- CMO(bb[,4],n),
+             DonchianChannel = result <- DonchianChannel(bb[,c(2,3)],n),
+             DPO = result <- DPO(bb[,4],n,shift = m,maType = p),
+             DVI = result <- DVI(bb[,4],n),
+             EMV = result <- EMV(bb[,c(2,3)],bb[,6],n,maType = m),
+             KST = result <- KST(bb[,4],n = c(n,n,n,floor((3 * n) / 2)),nROC = c(n, n + floor(n/2),2 * n, 2*n + floor(n/2)),nSig = m,maType = p),
+             lags = result <- lag(bb[,m],n),
+             MACD = result <- MACD(bb[,4],n,m,p,q),
+             MFI = result <- MFI(bb[,c(2,3,4)],bb[,6],n),
+             OBV = result <- OBV(bb[,4],bb[,6]),
+             Pbands = result <- PBands(bb[,4],n,sd = m,maType = p),
+             ROC = result <- ROC(bb[,4],n),
+             rollSFM = result <- rollSFM(bb[,4],n),
+             RSI = result <- RSI(bb[,4],n,m),
+             SAR = result <- SAR(bb[,c(2,3)],accel = c(n,m)),
+             stoch = result <- stoch(bb[,c(2,3,4)],nFastK = n,nFastD = m,nSlowD = p,maType = q),
+             TDI = result <- TDI(bb[,4],n,m),
+             TRIX = result <- TRIX(bb[,4],n,m,p),
+             ultimateOscillator = result <- ultimateOscillator(bb[,c(2,3,4)],n = c(5, 10, 20), wts = c(4, 2, 1)),
+             VHF = result <- VHF(bb[,4],n),
+             volatility = result <- volatility(bb[,c(7,2,3,4)],n),
+             williamsAD = result <- williamsAD(bb[,c(2,3,4)]),
+             WPR = result <- WPR(bb[,c(2,3,4)],n),
+             ZigZag <- result <- ZigZag(bb[,c(2,3)],n),
+             SMA = result <- SMA(bb[,4],n),
+             EMA = result <- EMA(bb[,4],n),
+             DEMA = result <- DEMA(bb[,4],n,m),
+             WMA = result <- WMA(bb[,4],n),
+             EVWMA = result <- EVWMA(bb[,4],n),
+             ZLEMA = result <- ZLEMA(bb[,4],n),
+             VWAP = result <- VWAP(bb[,4],n),
+             VMA = result <- VMA(bb[,4],n),
+             HMA = result <- HMA(bb[,4],n),
+             ALMA = result <- ALMA(bb[,4],n,m,p)
+      )
+      result
+    }
   # Indicators of the Strategy
   Inds <- v$indicators
   n <- length(Inds)
   for (i in 1:n) {
     m <- nrow(Inds[[i]][[4]])
-    qqq <- ""
+    qqq <- "bb = bb, FUN = Inds[[i]][[1]]"
     if (m > 1) {
       for (j in 1:m) {
         qqq <- paste0(qqq,",", Inds[[i]][[4]][j,1], sep = "")
       }
     }else {
-      qqq <- paste(",",Inds[[i]][[4]][1,1])
+      qqq <- paste(qqq,",",Inds[[i]][[4]][1,1])
     }
     if(length(qqq) > 1){
       qqq <- paste(qqq,collapse="")
     }
     # proper data of each indicator
-    lll <- which(Indicators_Data[,1] == Inds[[i]][[1]])
-    Da <- as.character(Indicators_Data[lll,2])
-    b <- paste(Inds[[i]][[2]], " <- ", Inds[[i]][[1]], "(",Da,qqq, ")", sep = "")
+    b <- paste(Inds[[i]][[2]], " <- Indis(",qqq, ")", sep = "")
     eval(parse(text = b))
-    b <- paste("bb <- ncol(",Inds[[i]][[2]],")")
+    b <- paste("bbbb <- ncol(",Inds[[i]][[2]],")")
     eval(parse(text = b))
-    if(bb > 1){
+    if(bbbb > 1){
+      # remove dot from col names
       b <- paste("nn <- colnames(",Inds[[i]][[2]],")")
       eval(parse(text = b))
       nn <- gsub("\\.","",nn)
       b <- paste("colnames(",Inds[[i]][[2]],") <- nn")
       eval(parse(text = b))
-      for (j in 1:bb) {
+      # Seperate each column as a vector
+      for (j in 1:bbbb) {
         b <- paste("mm <- colnames(",Inds[[i]][[2]],")[j]")
         eval(parse(text = b))
         nindname <- paste(Inds[[i]][[2]],"_",mm,sep = "")
