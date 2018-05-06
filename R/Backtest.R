@@ -154,6 +154,7 @@ Backtest <- function (x)
     k <- dim(g)[2]
     if (k > 1) {
       e <- rowSums(g) == k
+      e <- xts(e,order.by = index(g))
     }
     else {
       e <- g
