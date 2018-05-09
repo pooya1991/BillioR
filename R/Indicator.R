@@ -5,6 +5,20 @@ Indicator <- function(share,FUN,n,m,p,q){
   library(zoo)
   library(xts)
   library(TTR)
+  # Ichimoku Indicator Function
+  ichimoku <- function(HLC, nFast=9, nMed=26, nSlow=52) {
+    turningLine <- (runMax(Hi(HLC), nFast)+runMin(Lo(HLC), nFast))/2
+    baseLine <- (runMax(Hi(HLC), nMed)+runMin(Lo(HLC), nMed))/2
+    spanA <- lag((turningLine+baseLine)/2, nMed)
+    spanB <- lag((runMax(Hi(HLC), nSlow)+runMin(Lo(HLC), nSlow))/2, nMed)
+    plotSpan <- lag(Cl(HLC), -nMed) #for plotting the original Ichimoku only
+    laggingSpan <- lag(Cl(HLC), nMed)
+    lagSpanA <- lag(spanA, nMed)
+    lagSpanB <- lag(spanB, nMed)
+    out <- cbind(turnLine=turningLine, baseLine=baseLine, spanA=spanA, spanB=spanB, plotSpan=plotSpan, laggingSpan=laggingSpan, lagSpanA, lagSpanB)
+    colnames(out) <- c("turnLine", "baseLine", "spanA", "spanB", "plotLagSpan", "laggingSpan", "lagSpanA","lagSpanB")
+    return (out)
+  }
   vv <- fromJSON(lin)
   if(vv[[1]][[1]] == 0){
     cc <- vv[[1]][[3]]
@@ -32,6 +46,7 @@ Indicator <- function(share,FUN,n,m,p,q){
            DPO = result <- DPO(C,n,shift = m,maType = p),
            DVI = result <- DVI(C,n),
            EMV = result <- EMV(HL,V,n,maType = m),
+           ichimoku = result <- ichimoku(HLC,nFast = n,nMed = m,nSlow = p),
            KST = result <- KST(C,n = c(n,n,n,floor((3 * n) / 2)),nROC = c(n, n + floor(n/2),2 * n, 2*n + floor(n/2)),nSig = m,maType = p),
            lags = result <- lag(bb[,m],n),
            MACD = result <- MACD(C,n,m,p,q),
