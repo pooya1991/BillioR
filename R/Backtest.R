@@ -28,6 +28,20 @@ Backtest <- function (x)
     C <- bb[,4]
     V <- bb[,6]
   }
+  # Ichimoku Indicator Function
+  ichimoku <- function(HLC, nFast=9, nMed=26, nSlow=52) {
+    turningLine <- (runMax(Hi(HLC), nFast)+runMin(Lo(HLC), nFast))/2
+    baseLine <- (runMax(Hi(HLC), nMed)+runMin(Lo(HLC), nMed))/2
+    spanA <- lag((turningLine+baseLine)/2, nMed)
+    spanB <- lag((runMax(Hi(HLC), nSlow)+runMin(Lo(HLC), nSlow))/2, nMed)
+    plotSpan <- lag(Cl(HLC), -nMed) #for plotting the original Ichimoku only
+    laggingSpan <- lag(Cl(HLC), nMed)
+    lagSpanA <- lag(spanA, nMed)
+    lagSpanB <- lag(spanB, nMed)
+    out <- cbind(turnLine=turningLine, baseLine=baseLine, spanA=spanA, spanB=spanB, plotSpan=plotSpan, laggingSpan=laggingSpan, lagSpanA, lagSpanB)
+    colnames(out) <- c("turnLine", "baseLine", "spanA", "spanB", "plotLagSpan", "laggingSpan", "lagSpanA","lagSpanB")
+    return (out)
+  }
   # Indicators function
   Indis <- function(bb,FUN,n,m,p,q){
     switch(FUN,
@@ -45,6 +59,7 @@ Backtest <- function (x)
            DPO = result <- DPO(bb[,4],n,shift = m,maType = p),
            DVI = result <- DVI(bb[,4],n),
            EMV = result <- EMV(bb[,c(2,3)],bb[,6],n,maType = m),
+           ichimoku = result <- ichimoku(HLC = bb[,c(2,3,4)],nFast = n,nMed = m,nSlow = p),
            KST = result <- KST(bb[,4],n = c(n,n,n,floor((3 * n) / 2)),nROC = c(n, n + floor(n/2),2 * n, 2*n + floor(n/2)),nSig = m,maType = p),
            lags = result <- lag(bb[,m],n),
            MACD = result <- MACD(bb[,4],n,m,p,q),
