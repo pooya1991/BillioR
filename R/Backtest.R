@@ -142,7 +142,7 @@ Backtest <- function (x)
   # Name of each rull which determine the type and orde
   Rules <- vector()
   for (i in 1:n) {
-    # Type and Order of
+    # Type and Order of relations
     nam <- paste(Rels[[i]][[2]], Rels[[i]][1], sep = "")
     Rules[i] <- nam
     type[i] <- Rels[[i]][[2]]
@@ -177,69 +177,168 @@ Backtest <- function (x)
     b <- paste(Mtype[i], " <- e", sep = "")
     eval(parse(text = b))
   }
-  BuySig <- cbind(as.xts(lag(beforsend, 1)), send)
-  BuySig <- BuySig[complete.cases(BuySig), ]
-  SellSig <- cbind(as.xts(lag(beforbuy, 1)), buy)
-  SellSig <- SellSig[complete.cases(SellSig), ]
-  BUY <- rowSums(BuySig) == 2
-  BUY <- xts(BUY, index(BuySig))
-  SELL <- rowSums(SellSig) == 2
-  SELL <- xts(SELL, as.Date(index(SellSig)))
-  b <- paste("SELL <- SELL['", StartDate, "/", EndDtae, "']", 
-             sep = "")
-  eval(parse(text = b))
-  b <- paste("BUY <- BUY['", StartDate, "/", EndDtae, "']", 
-             sep = "")
-  eval(parse(text = b))
-  Bact <- which(BUY)
-  Sact <- which(SELL)
-  Sact <- Sact[Sact > Bact[1]]
-  Bact <- Bact[Bact < Sact[length(Sact)]]
-  n <- min(length(Bact), length(Sact))
-  Act <- matrix(nrow = n,ncol = 2)
-  Act[1,1] <- Bact[1]
-  Act[1,2] <- Sact[1]
-  for (i in 2:n) {
-    t <- i - 1
-    BB <- which(Bact > Act[t,2])
-    if(length(BB) >= 1){
-      BB <- BB[1]
-      Act[i,1] <- Bact[BB]
-      CC <- which(Sact > Act[i,1])
-      if(length(CC) >= 1){
-        CC <- CC[1]
-        Act[i,2] <- Sact[CC]
-      }
-    }
+  # Stop Loss and Take Profit Conditions - LimP --> Profit
+  Lims <- v$limites
+  if(Lims[[1]] > 0){
+    LimP <- as.numeric(Lims[[2]])
+    LimL <- as.numeric(Lims[[3]])
   }
-  Act <- Act[complete.cases(Act),]
-  Sact <- Act[,2]
-  Bact <- Act[,1]
-  n <- length(Bact)
+  # Initial Values
   RESULTS <- list()
   suc <- 0
   cumRet <- 1
-  for (i in 1:n) {
-    t <- (2 * i) - 1
-    tt <- 2 * i
-    Date <- as.Date(index(BUY)[Bact[i]])
-    Action <- "B"
-    Price <- C[Date]
-    names(Price) <- "Price"
-    Return <- NA
-    RESULTS[[t]] <- data.frame(Date, Action, Price, Return)
-    Date <- as.Date(index(SELL)[Sact[i]])
-    Action <- "S"
-    Price <- C[Date]
-    names(Price) <- "Price"
-    Ret <- (Price/RESULTS[[t]][, 3]) - 1
-    if(Ret > 0.015){
-      suc <- suc + 1
+  t <- 0
+  # Buy and Limits are Defined
+  if("send" %in% Mtype && "beforsend" %in% Mtype && Lims[[1]] == 1){
+    BuySig <- cbind(as.xts(lag(beforsend, 1)), send)
+    BuySig <- BuySig[complete.cases(BuySig), ]
+    BUY <- rowSums(BuySig) == 2
+    BUY <- xts(BUY, index(BuySig))
+    b <- paste("BUY <- BUY['", StartDate, "/", EndDtae, "']",sep = "")
+    eval(parse(text = b))
+    Bact <- which(BUY)
+    n <- length(Bact)
+    kk <- vector()
+    if(n > 0){
+      for (i in 1:n) {
+        ddd <- index(BUY[Bact[i],])
+        ppp <- HLC[index(HLC) > ddd,]
+        pr <- ((ppp[,1]/as.numeric(HLC[ddd,3])) - 1) * 100
+        lo <- ((ppp[,2]/as.numeric(HLC[ddd,3])) - 1) * 100
+        kk[i] <- min(which(pr > LimP)[1],which(lo < -LimL)[1],na.rm = TRUE)
+        if(is.na(kk[i]) || kk[i] == Inf){
+          kk[i] <- nrow(pr)
+        }
+        t <- t + 1
+        Date <- as.Date(ddd)
+        Action <- "B"
+        Price <- C[Date]
+        names(Price) <- "Price"
+        Return <- NA
+        RESULTS[[t]] <- data.frame(Date, Action, Price, Return)
+        t <- t + 1
+        Date <- as.Date(index(ppp)[kk[i]])
+        Action <- "S"
+        Price <- C[Date]
+        names(Price) <- "Price"
+        Ret <- (Price/RESULTS[[t - 1]][, 3]) - 1
+        if(Ret > 0.015){
+          suc <- suc + 1
+        }
+        cumRet <- cumRet * (as.numeric(Ret) + 0.985)
+        names(Ret) <- "Return"
+        RESULTS[[t]] <- data.frame(Date, Action, Price, Ret)
+      }
     }
-    cumRet <- cumRet * (as.numeric(Ret) + 0.985)
-    names(Ret) <- "Return"
-    RESULTS[[tt]] <- data.frame(Date, Action, Price, Ret)
   }
+  # Sell and Limits are defined
+  if("buy" %in% Mtype && "beforbuy" %in% Mtype && Lims[[1]] == 1){
+    SellSig <- cbind(as.xts(lag(beforbuy, 1)), buy)
+    SellSig <- SellSig[complete.cases(SellSig), ]
+    SELL <- rowSums(SellSig) == 2
+    SELL <- xts(SELL, as.Date(index(SellSig)))
+    b <- paste("SELL <- SELL['", StartDate, "/", EndDtae, "']", 
+               sep = "")
+    eval(parse(text = b))
+    Sact <- which(SELL)
+    n <- length(Sact)
+    kk <- vector()
+    if(n > 0){
+      for (i in 1:n) {
+        ddd <- index(SELL[Sact[i],])
+        ppp <- HLC[index(HLC) > ddd,]
+        pr <- ((as.numeric(HLC[ddd,3])/ppp[,2]) - 1) * 100
+        lo <- ((as.numeric(HLC[ddd,3])/ppp[,1]) - 1) * 100
+        kk[i] <- min(which(pr > LimP)[1],which((lo < -LimL))[1],na.rm = TRUE)
+        if(is.na(kk[i]) || kk[i] == Inf){
+          kk[i] <- nrow(pr)
+        }
+        t <- t + 1
+        Date <- as.Date(ddd)
+        Action <- "S"
+        Price <- C[Date]
+        names(Price) <- "Price"
+        Return <- NA
+        RESULTS[[t]] <- data.frame(Date, Action, Price, Return)
+        t <- t + 1
+        Date <- as.Date(index(ppp)[kk[i]])
+        Action <- "B"
+        Price <- C[Date]
+        names(Price) <- "Price"
+        Ret <- (Price/RESULTS[[t - 1]][, 3]) - 1
+        if(Ret > 0.015){
+          suc <- suc + 1
+        }
+        cumRet <- cumRet * (as.numeric(Ret) + 0.985)
+        names(Ret) <- "Return"
+        RESULTS[[t]] <- data.frame(Date, Action, Price, Ret)
+      }
+    }
+  }
+  # Buy Sell Conditions defined
+  if(length(Mtype) == 4 && Lims[[1]] == 0){
+    BuySig <- cbind(as.xts(lag(beforsend, 1)), send)
+    BuySig <- BuySig[complete.cases(BuySig), ]
+    SellSig <- cbind(as.xts(lag(beforbuy, 1)), buy)
+    SellSig <- SellSig[complete.cases(SellSig), ]
+    BUY <- rowSums(BuySig) == 2
+    BUY <- xts(BUY, index(BuySig))
+    SELL <- rowSums(SellSig) == 2
+    SELL <- xts(SELL, as.Date(index(SellSig)))
+    b <- paste("SELL <- SELL['", StartDate, "/", EndDtae, "']", 
+               sep = "")
+    eval(parse(text = b))
+    b <- paste("BUY <- BUY['", StartDate, "/", EndDtae, "']", 
+               sep = "")
+    eval(parse(text = b))
+    Bact <- which(BUY)
+    Sact <- which(SELL)
+    Sact <- Sact[Sact > Bact[1]]
+    Bact <- Bact[Bact < Sact[length(Sact)]]
+    n <- min(length(Bact), length(Sact))
+    Act <- matrix(nrow = n,ncol = 2)
+    Act[1,1] <- Bact[1]
+    Act[1,2] <- Sact[1]
+    for (i in 2:n) {
+      t <- i - 1
+      BB <- which(Bact > Act[t,2])
+      if(length(BB) >= 1){
+        BB <- BB[1]
+        Act[i,1] <- Bact[BB]
+        CC <- which(Sact > Act[i,1])
+        if(length(CC) >= 1){
+          CC <- CC[1]
+          Act[i,2] <- Sact[CC]
+        }
+      }
+    }
+    Act <- Act[complete.cases(Act),]
+    Sact <- Act[,2]
+    Bact <- Act[,1]
+    n <- length(Bact)
+    for (i in 1:n) {
+      t <- (2 * i) - 1
+      tt <- 2 * i
+      Date <- as.Date(index(BUY)[Bact[i]])
+      Action <- "B"
+      Price <- C[Date]
+      names(Price) <- "Price"
+      Return <- NA
+      RESULTS[[t]] <- data.frame(Date, Action, Price, Return)
+      Date <- as.Date(index(SELL)[Sact[i]])
+      Action <- "S"
+      Price <- C[Date]
+      names(Price) <- "Price"
+      Ret <- (Price/RESULTS[[t]][, 3]) - 1
+      if(Ret > 0.015){
+        suc <- suc + 1
+      }
+      cumRet <- cumRet * (as.numeric(Ret) + 0.985)
+      names(Ret) <- "Return"
+      RESULTS[[tt]] <- data.frame(Date, Action, Price, Ret)
+    }
+  }
+  n <- length(RESULTS) / 2
   successRate <- suc / n
   nat <- list(successRate,as.numeric(cumRet - 1),RESULTS)
   names(nat) <- c("SuccessRate","CumulativeReturn","Results")
