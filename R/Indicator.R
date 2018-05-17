@@ -5,6 +5,7 @@ Indicator <- function(share,FUN,n,m,p,q){
   library(zoo)
   library(xts)
   library(TTR)
+  library(quantmod)
   # Ichimoku Indicator Function
   ichimoku <- function(HLC, nFast=9, nMed=26, nSlow=52) {
     turningLine <- (runMax(Hi(HLC), nFast)+runMin(Lo(HLC), nFast))/2
@@ -46,7 +47,7 @@ Indicator <- function(share,FUN,n,m,p,q){
            DPO = result <- DPO(C,n,shift = m,maType = p),
            DVI = result <- DVI(C,n),
            EMV = result <- EMV(HL,V,n,maType = m),
-           ichimoku = result <- ichimoku(HLC,nFast = n,nMed = m,nSlow = p),
+           ichimoku = result <- ichimoku(HLC = HLC,nFast = n,nMed = m,nSlow = p),
            KST = result <- KST(C,n = c(n,n,n,floor((3 * n) / 2)),nROC = c(n, n + floor(n/2),2 * n, 2*n + floor(n/2)),nSig = m,maType = p),
            lags = result <- lag(bb[,m],n),
            MACD = result <- MACD(C,n,m,p,q),
