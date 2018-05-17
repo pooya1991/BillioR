@@ -178,10 +178,10 @@ Strategies <- function (x,n,m)
     eval(parse(text = b))
   }
   # Stop Loss and Take Profit Conditions - LimP --> Profit
-  Lims <- v$limits
+  Lims <- v$limites
   if(Lims[[1]] > 0){
-    LimP <- Lims[[2]]
-    LimL <- Lims[[3]]
+    LimP <- as.numeric(Lims[[2]])
+    LimL <- as.numeric(Lims[[3]])
   }
   Act <- "N"
   
