@@ -75,6 +75,7 @@ Behgozin <- function (x,n,m)
            RSI = result <- RSI(bb[,4],n,m),
            SAR = result <- SAR(bb[,c(2,3)],accel = c(n,m)),
            stoch = result <- stoch(bb[,c(2,3,4)],nFastK = n,nFastD = m,nSlowD = p,maType = q),
+           SMI = result <- SMI(HLC,n = n,nFast = m,nSlow = p,nSig = q),
            TDI = result <- TDI(bb[,4],n,m),
            TRIX = result <- TRIX(bb[,4],n,m,p),
            ultimateOscillator = result <- ultimateOscillator(bb[,c(2,3,4)],n = c(5, 10, 20), wts = c(4, 2, 1)),
