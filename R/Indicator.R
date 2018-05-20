@@ -59,6 +59,7 @@ Indicator <- function(share,FUN,n,m,p,q){
            RSI = result <- RSI(C,n,m),
            SAR = result <- SAR(HL,accel = c(n,m)),
            stoch = result <- stoch(HLC,nFastK = n,nFastD = m,nSlowD = p,maType = q),
+           SMI = result <- SMI(HLC,n = n,nFast = m,nSlow = p,nSig = q),
            TDI = result <- TDI(C,n,m),
            TRIX = result <- TRIX(C,n,m,p),
            ultimateOscillator = result <- ultimateOscillator(HLC,n = c(5, 10, 20), wts = c(4, 2, 1)),
