@@ -203,7 +203,7 @@ Backtest <- function (x)
     if(n > 0){
       for (i in 1:n) {
         ddd <- index(BUY[Bact[i],])
-        ppp <- HLC[index(HLC) > ddd,]
+        ppp <- HLC[index(HLC) >= ddd,]
         pr <- ((ppp[,1]/as.numeric(HLC[ddd,3])) - 1) * 100
         lo <- ((ppp[,2]/as.numeric(HLC[ddd,3])) - 1) * 100
         kk[i] <- min(which(pr > LimP)[1],which(lo < -LimL)[1],na.rm = TRUE)
@@ -247,7 +247,7 @@ Backtest <- function (x)
     if(n > 0){
       for (i in 1:n) {
         ddd <- index(SELL[Sact[i],])
-        ppp <- HLC[index(HLC) > ddd,]
+        ppp <- HLC[index(HLC) >= ddd,]
         pr <- ((as.numeric(HLC[ddd,3])/ppp[,2]) - 1) * 100
         lo <- ((as.numeric(HLC[ddd,3])/ppp[,1]) - 1) * 100
         kk[i] <- min(which(pr > LimP)[1],which((lo < -LimL))[1],na.rm = TRUE)
