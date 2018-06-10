@@ -1,5 +1,6 @@
 PublicBehgozin <- function(stg,SuccessRate = 0,CumulativeReturn = 0){
   d <- PublicStrategies[[stg]][,-2]
+  row.names(d) <- NULL
   res <- d[d[,2] > SuccessRate/100,]
   res <- res[res[,3] > CumulativeReturn/100,]
   if(nrow(res) > 0){
