@@ -1,6 +1,6 @@
 PublicStrtg <- function(n){
   library(jsonlite)
   if(n == 1){
-    Price
+    split(Price, seq(nrow(Price)))
   }
 }
