@@ -1,10 +1,10 @@
-Package: BillioR
+Package: BillioMap
 Type: Package
-Title: Billionaire Startup
+Title: Billionaire Startup Map Version
 Version: 1.0.1
-Date: 2018-04-20
+Date: 2018-06-24
 Author: Pooya Chaghoei
 Maintainer: Pooya Chaghoei <pooya1991@gmail.com>
-Description: This package is a quantitive finance tool for Iran Stock Market.
+Description: This package is a Order Management Service for Businesses.
 License: Apache2
 LazyData: true
