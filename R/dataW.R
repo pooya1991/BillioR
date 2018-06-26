@@ -3,5 +3,5 @@ dataW <- function(x){
   n <- nrow(dataB)
   m <- n + 1
   dataB[m,1] <- m
-  dataB[m,"Hello"]
+  dataB[m,2] <- as.character(x)
 }
