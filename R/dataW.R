@@ -7,5 +7,4 @@ dataW <- function(x){
   l <- getwd()
   lin <- paste(l,"/data/dataB.rda")
   lin
-  save(dataB,file = lin)
 }
