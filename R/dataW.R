@@ -4,7 +4,5 @@ dataW <- function(x){
   m <- n + 1
   dataB[m,1] <- m
   dataB[m,2] <- as.character(x)
-  l <- getwd()
-  lin <- paste(l,"/data/dataB.rda")
-  lin
+  ls()
 }
