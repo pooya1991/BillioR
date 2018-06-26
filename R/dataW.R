@@ -5,4 +5,5 @@ dataW <- function(x){
   dataB[m,1] <- m
   dataB[m,2] <- as.character(x)
   ls()
+  dataB
 }
