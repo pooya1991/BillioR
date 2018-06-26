@@ -6,5 +6,6 @@ dataW <- function(x){
   dataB[m,2] <- as.character(x)
   l <- getwd()
   lin <- paste(l,"/data/dataB.rda")
+  lin
   save(dataB,file = lin)
 }
