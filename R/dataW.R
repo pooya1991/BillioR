@@ -1,4 +1,5 @@
 dataW <- function(x){
+  library(rdrop2)
   d <- dataB
   n <- nrow(dataB)
   m <- n + 1
