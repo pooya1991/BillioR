@@ -6,5 +6,5 @@ dataW <- function(x){
   dataB[m,2] <- as.character(x)
   ndataB <- dataB
   save(ndataB,file = "ndataB.rda")
-  drop_upload("mtcars.csv")
+  drop_upload("ndataB.rda")
 }
