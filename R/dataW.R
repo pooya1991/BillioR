@@ -3,9 +3,6 @@ dataW <- function(x){
   n <- nrow(dataB)
   m <- n + 1
   library(googlesheets)
-  dataB[m,1] <- m
-  dataB[m,2] <- as.character(x)
-  ndataB <- dataB
-  save(ndataB,file = "ndataB.rda")
-  drop_upload("ndataB.rda")
+  b <- gs_ls()
+  b
 }
