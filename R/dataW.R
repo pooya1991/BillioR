@@ -2,7 +2,7 @@ dataW <- function(x){
   d <- dataB
   n <- nrow(dataB)
   m <- n + 1
-  library(rdrop2)
+  library(googlesheets)
   dataB[m,1] <- m
   dataB[m,2] <- as.character(x)
   ndataB <- dataB
