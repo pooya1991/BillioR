@@ -1,9 +1,8 @@
 Inds_Info <- function(x = "All"){
   if(x=="All"){
-    y <- names(Indic)
+    result <- Indic
   }else{
-    y <- x
+    result <- Indic[[x]]
   }
-  result <- Indic[[y]]
   result
 }
