@@ -33,5 +33,6 @@ ShareData <- function(share,timeframe = "daily",sdate = "2014-01-01",edate = Sys
   result <- as.data.frame(result)
   result[,6] <- Time
   colnames(result) <- c("Open","High","Low","Close","Volume","Time")
+  row.names(result) <- NULL
   result
 }
