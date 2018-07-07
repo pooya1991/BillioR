@@ -29,5 +29,6 @@ ShareData <- function(share,timeframe = "daily",sdate = "2014-01-01",edate = Sys
          monthly = result <- to.monthly(dat),
          quarterly = result <- to.quarterly(dat)
          )
+  result <- as.data.frame(result)
   result
 }
