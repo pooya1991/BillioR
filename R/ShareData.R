@@ -4,7 +4,6 @@ ShareData <- function(share,timeframe = "daily",sdate = "2014-01-01",edate = Sys
   library(quantmod)
   library(googlesheets)
   library(dplyr)
-  load("C:/Users/Pooya/Desktop/Core/Library/BillioR/data/token.rda")
   gs_auth(token = token)
   share <- paste(" ",share," ",sep = "")
   d <- gs_read(gs_title(share))
@@ -30,4 +29,5 @@ ShareData <- function(share,timeframe = "daily",sdate = "2014-01-01",edate = Sys
          monthly = result <- to.monthly(dat),
          quarterly = result <- to.quarterly(dat)
          )
+  result
 }
