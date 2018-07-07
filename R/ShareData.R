@@ -29,6 +29,9 @@ ShareData <- function(share,timeframe = "daily",sdate = "2014-01-01",edate = Sys
          monthly = result <- to.monthly(dat),
          quarterly = result <- to.quarterly(dat)
          )
+  Time <- index(result)
   result <- as.data.frame(result)
+  result[,6] <- Time
+  colnames(result) <- c("Open","High","Low","Close","Volume","Time")
   result
 }
