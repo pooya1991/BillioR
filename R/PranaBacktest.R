@@ -10,7 +10,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
   library(Boom)
   library(MASS)
   library(bsts)
-  ShareData <- function(share = Share,timeframe = "daily",sdate = "2014-01-01",edate = Sys.Date()){
+  ShareData <- function(share,timeframe = "daily",sdate = "2014-01-01",edate = Sys.Date()){
     share <- paste(" ",share," ",sep = "")
     d <- gs_read(gs_title(share))
     b <- pull(d,Time)
@@ -266,7 +266,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
     names(Natije) <- c("MaxOpenPos","MaxDrwDwn","AcToDeAc","SuccessRate","MeanProfit","TotalRet","TurnOver","MeanLost","TotalVol","Detail")
     Natije
   }
-  db <- ShareData(share = share,timeframe = Timeframe)
+  db <- ShareData(share = Share,timeframe = Timeframe)
   bb <- db[[1]]
   dd <- db[[2]]
   # get the Strategy
