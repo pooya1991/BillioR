@@ -10,7 +10,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
   library(Boom)
   library(MASS)
   library(bsts)
-  ShareData <- function(share = share,timeframe = "daily",sdate = "2014-01-01",edate = Sys.Date()){
+  ShareData <- function(share = Share,timeframe = "daily",sdate = "2014-01-01",edate = Sys.Date()){
     share <- paste(" ",share," ",sep = "")
     d <- gs_read(gs_title(share))
     b <- pull(d,Time)
@@ -229,7 +229,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
     MeanProfit <- mean(Result[Result[,4] > 0 & !is.na(Result[,4]),4])
     MeanLost <- mean(Result[Result[,4] <= 0 & !is.na(Result[,4]),4])
     MaxDrwDwn <- min(Result[Result[,4] <= 0 & !is.na(Result[,4]),4])
-    TotalRet <- cumprod(1 + Result[!is.na(Result[,4]),4])[n]
+    TotalRet <- cumprod(1 + Result[!is.na(Result[,4]),4])[n] - 1
     TurnOver <- sum(Result[,1]) * Vol
     TotalVol <- n * Vol
     OpenPos <- vector()
