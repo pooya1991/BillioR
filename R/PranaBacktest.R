@@ -266,6 +266,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
     names(Natije) <- c("MaxOpenPos","MaxDrwDwn","AcToDeAc","SuccessRate","MeanProfit","TotalRet","TurnOver","MeanLost","TotalVol","Detail")
     Natije
   }
+  Share <- as.character(Share)
   db <- ShareData(share = Share,timeframe = Timeframe)
   bb <- db[[1]]
   dd <- db[[2]]
