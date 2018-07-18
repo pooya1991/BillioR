@@ -419,7 +419,8 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
       }
       #Take Profit and Stop Lost
       n <- nrow(B)
-      for (i in 1:n) {
+      return(n)
+      'for (i in 1:n) {
         tar <- index(B)[i]
         pri <- B[i,1]
         if(StpLst[1,1] == "Percent"){
@@ -449,7 +450,6 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
         nEtkpP[i] <- as.numeric(temp[l,4])
         nEtkpt[i] <- i
       }
-      return(length(nEstp))
       'Etar <- c(C,nEstp,nEtkp)
       etemp <- rep(0,length(C))
       Etra <- c(etemp,nEstpt,nEtkpt)
