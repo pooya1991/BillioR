@@ -421,8 +421,8 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
       n <- nrow(B)
       for (i in 1:n) {
         tar <- index(B)[i]
-        'pri <- B[i,1]
-        if(StpLst[1,1] == "Percent"){
+        pri <- B[i,1]
+        'if(StpLst[1,1] == "Percent"){
           Stp <- as.numeric(floor(pri * ((100 - as.numeric(StpLst[1,2]))/100)))
         }else{
           Stp <- as.numeric(pri - StpLst[1,2])
