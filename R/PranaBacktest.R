@@ -247,8 +247,9 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
   datamatrix <- dd[,1:5]
   mode(datamatrix) = "numeric"
   dd <- xts(datamatrix,order.by = as.Date(dd[,6]))
+  bb
   # get the Strategy
-  x <- as.character(Stg)
+  'x <- as.character(Stg)
   Stg <- fromJSON(x)
   if(Stg$BUY$Status == "Set"){
     EnRuls <- Stg$BUY$Enter$Rulls
@@ -500,5 +501,5 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
       repo <- Report(Result = Result,dd = dd,MaxPos = MaxPos)
     }
   }
-  repo
+  repo'
 }
