@@ -459,7 +459,8 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
       }
       val <- rep(1,m)
       forush <- xts(data.frame(Price = Epri,Trade = Etra, valid = val),order.by = Etar)
-      n <- nrow(B)
+      return(as.data.frame(forush))
+      'n <- nrow(B)
       S <- as.data.frame(B[1,])
       STar <- vector()
       for (i in 1:n) {
@@ -475,8 +476,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
         STar[i] <- as.character(index(forush[ff,]))
       }
       S <- xts(S,order.by = as.POSIXct(STar))
-      return(as.data.frame(S))
-      'val <- MaxPosition(B = B,S = S,MaxPos = MaxPos)
+      val <- MaxPosition(B = B,S = S,MaxPos = MaxPos)
       BBB <- B[val > 0,]
       SSS <- S[val[S[,2]] > 0,]
       n <- nrow(BBB)
