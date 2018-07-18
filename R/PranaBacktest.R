@@ -239,9 +239,9 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
   }
   Share <- as.character(Share)
   db <- fromJSON(Share)
-  bb <- db[[1]]
+  bb <- as.data.frame(db[[1]])
   bb <- xts(bb[,1:5],order.by = as.POSIXct(bb[,6]))
-  dd <- db[[2]]
+  dd <- as.data.frame(db[[2]])
   dd <- xts(dd[,1:5],order.by = as.Date(dd[,6]))
   # get the Strategy
   x <- as.character(Stg)
