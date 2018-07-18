@@ -349,8 +349,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
     nEtkp <- vector()
     nEtkpP <- vector()
     nEtkpt <- vector()
-    return(ExRuls)
-    'if(nrow(B) > 0){
+    if(nrow(B) > 0){
       n <- length(ExRuls)
       if(n > 0){
         for (i in 1:n) {
@@ -495,7 +494,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
       Result <- Result[,-2]
       rownames(Result) <- NULL
       repo <- Report(Result = Result,dd = dd,MaxPos = MaxPos)
-    }'
+    }
   }
-  'repo'
+  repo
 }
