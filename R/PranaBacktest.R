@@ -427,14 +427,14 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
         }else{
           Stp <- as.numeric(pri - StpLst[1,2])
         }
-        'if(TkPrft[1,1] == "Percent"){
+        if(TkPrft[1,1] == "Percent"){
           Prf <- as.numeric(floor(pri * ((100 + as.numeric(TkPrft[1,2]))/100)))
         }else{
           Prf <- as.numeric(pri + TkPrft[1,2])
         }
         baz <- paste(tar,EndDate,sep = "/")
         temp <- bb[baz]
-        m <- index(temp)[which(temp[,3] < Stp)[1]]
+        'm <- index(temp)[which(temp[,3] < Stp)[1]]
         if(is.na(m)){
           m <- index(tail(temp,1))
         }
@@ -449,7 +449,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
         nEtkpP[i] <- as.numeric(temp[l,4])
         nEtkpt[i] <- i'
       }
-      return(Stp)
+      return(as.data.frame(temp))
       'Etar <- c(C,nEstp,nEtkp)
       etemp <- rep(0,length(C))
       Etra <- c(etemp,nEstpt,nEtkpt)
