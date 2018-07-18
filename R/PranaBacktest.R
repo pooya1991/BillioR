@@ -218,6 +218,9 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
     }
     MaxOpenPos <- max(OpenPos)
     MaxOpenPos <- min(MaxOpenPos,MaxPos)
+    if(MaxOpenPos == 0){
+      MaxOpenPos <- 1
+    }
     temtar <- vector()
     doreneg <- vector()
     for (i in 1:n) {
@@ -414,7 +417,8 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
         eval(parse(text = b))
         C <- index(BUY_ExitRu[which(BUY_ExitRu),])
       }
-      #Take Profit and Stop Lost
+      return(C)
+      '#Take Profit and Stop Lost
       n <- nrow(B)
       for (i in 1:n) {
         tar <- index(B)[i]
@@ -493,8 +497,8 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
       Result <- data.frame(Transaction,TT,Tar,Ret)
       Result <- Result[,-2]
       rownames(Result) <- NULL
-      repo <- Report(Result = Result,dd = dd,MaxPos = MaxPos)
+      repo <- Report(Result = Result,dd = dd,MaxPos = MaxPos)'
     }
   }
-  repo
+  'repo'
 }
