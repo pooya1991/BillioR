@@ -449,7 +449,8 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
         nEtkpP[i] <- as.numeric(temp[l,4])
         nEtkpt[i] <- i
       }
-      Etar <- c(C,nEstp,nEtkp)
+      return(length(nEstp))
+      'Etar <- c(C,nEstp,nEtkp)
       etemp <- rep(0,length(C))
       Etra <- c(etemp,nEstpt,nEtkpt)
       Epri <- vector()
@@ -459,8 +460,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
       }
       val <- rep(1,m)
       forush <- xts(data.frame(Price = Epri,Trade = Etra, valid = val),order.by = Etar)
-      return(as.data.frame(forush))
-      'n <- nrow(B)
+      n <- nrow(B)
       S <- as.data.frame(B[1,])
       STar <- vector()
       for (i in 1:n) {
