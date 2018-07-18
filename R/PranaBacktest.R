@@ -10,7 +10,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "daily",StartDate = "2014-01
   library(Boom)
   library(MASS)
   library(bsts)
-  ShareData <- function(share,timeframe = "daily",sdate = "2014-01-01",edate = Sys.Date()){
+  ShareData <- function(share,timeframe = "hourly",sdate = "2014-01-01",edate = Sys.Date()){
     share <- paste(" ",share," ",sep = "")
     d <- gs_read(gs_title(share))
     b <- pull(d,Time)
