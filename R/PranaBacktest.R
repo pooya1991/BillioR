@@ -421,7 +421,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
       n <- nrow(B)
       for (i in 1:n) {
         tar <- index(B)[i]
-        pri <- B[i,1]
+        'pri <- B[i,1]
         if(StpLst[1,1] == "Percent"){
           Stp <- as.numeric(floor(pri * ((100 - as.numeric(StpLst[1,2]))/100)))
         }else{
@@ -447,9 +447,9 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
         nEstpt[i] <- i
         nEtkp[i] <- l
         nEtkpP[i] <- as.numeric(temp[l,4])
-        nEtkpt[i] <- i
+        nEtkpt[i] <- i'
       }
-      return(m)
+      return(tar)
       'Etar <- c(C,nEstp,nEtkp)
       etemp <- rep(0,length(C))
       Etra <- c(etemp,nEstpt,nEtkpt)
