@@ -34,5 +34,12 @@ ShareData <- function(share,timeframe = "hourly",sdate = "2014-01-01",edate = Sy
   result[,6] <- Time
   colnames(result) <- c("Open","High","Low","Close","Volume","Time")
   row.names(result) <- NULL
-  result
+  nat <- to.daily(dat)
+  Time <- index(nat)
+  nat <- as.data.frame(nat)
+  nat[,6] <- Time
+  colnames(nat) <- c("Open","High","Low","Close","Volume","Time")
+  row.names(nat) <- NULL
+  res <- list(Data = result,Daily = nat)
+  res
 }
