@@ -434,7 +434,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
         }
         baz <- paste(tar,EndDate,sep = "/")
         temp <- bb[baz]
-        'm <- index(temp)[which(temp[,3] < Stp)[1]]
+        m <- index(temp)[which(temp[,3] < Stp)[1]]
         if(is.na(m)){
           m <- index(tail(temp,1))
         }
@@ -447,10 +447,9 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
         nEstpt[i] <- i
         nEtkp[i] <- l
         nEtkpP[i] <- as.numeric(temp[l,4])
-        nEtkpt[i] <- i'
+        nEtkpt[i] <- i
       }
-      return(as.data.frame(baz))
-      'Etar <- c(C,nEstp,nEtkp)
+      Etar <- c(C,nEstp,nEtkp)
       etemp <- rep(0,length(C))
       Etra <- c(etemp,nEstpt,nEtkpt)
       Epri <- vector()
@@ -497,8 +496,8 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
       Result <- data.frame(Transaction,TT,Tar,Ret)
       Result <- Result[,-2]
       rownames(Result) <- NULL
-      repo <- Report(Result = Result,dd = dd,MaxPos = MaxPos)'
+      repo <- Report(Result = Result,dd = dd,MaxPos = MaxPos)
     }
   }
-  'repo'
+  repo
 }
