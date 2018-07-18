@@ -10,35 +10,6 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
   library(Boom)
   library(MASS)
   library(bsts)
-  ShareData <- function(share,timeframe = "hourly",sdate = "2014-01-01",edate = Sys.Date()){
-    share <- paste(" ",share," ",sep = "")
-    d <- gs_read(gs_title(share))
-    b <- pull(d,Time)
-    Time <- as.POSIXct(strptime(b, "%Y-%m-%d %H:%M:%S"))
-    ete <- data.frame(pull(d,6),pull(d,3),pull(d,4),pull(d,2),pull(d,8),pull(d,5),pull(d,7))
-    colnames(ete) <- c("Open","High","Low","Close","Volume","nTrades","Value")
-    dat <- data.frame(Time,ete)
-    ete <- dat[complete.cases(dat),]
-    dat <- xts(ete[,-1],order.by = ete[,1])
-    baz <- paste(sdate,"/",edate,sep = "")
-    dat <- dat[baz]
-    switch(timeframe,
-           m1 = result <- dat,
-           m3 = result <- to.minutes3(dat),
-           m5 = result <- to.minutes5(dat),
-           m10 = result <- to.minutes10(dat),
-           m15 = result <- to.minutes15(dat),
-           m30 = result <- to.minutes30(dat),
-           hourly = result <- to.hourly(dat),
-           daily = result <- to.daily(dat),
-           weekly = result <- to.weekly(dat),
-           monthly = result <- to.monthly(dat),
-           quarterly = result <- to.quarterly(dat)
-    )
-    res <- to.daily(dat)
-    nat <- list(result,res)
-    nat
-  }
   # Ichimoku Indicator Function
   ichimoku <- function(HLC, nFast=9, nMed=26, nSlow=52) {
     turningLine <- (runMax(Hi(HLC), nFast)+runMin(Lo(HLC), nFast))/2
