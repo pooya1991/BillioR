@@ -1,4 +1,4 @@
-ShareData <- function(share,timeframe = "daily",sdate = "2014-01-01",edate = Sys.Date()){
+ShareData <- function(share,timeframe = "hourly",sdate = "2014-01-01",edate = Sys.Date()){
   library(zoo)
   library(xts)
   library(quantmod)
