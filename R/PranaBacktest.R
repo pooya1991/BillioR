@@ -417,8 +417,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
         eval(parse(text = b))
         C <- index(BUY_ExitRu[which(BUY_ExitRu),])
       }
-      return(C)
-      '#Take Profit and Stop Lost
+      #Take Profit and Stop Lost
       n <- nrow(B)
       for (i in 1:n) {
         tar <- index(B)[i]
@@ -476,7 +475,8 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
         STar[i] <- as.character(index(forush[ff,]))
       }
       S <- xts(S,order.by = as.POSIXct(STar))
-      val <- MaxPosition(B = B,S = S,MaxPos = MaxPos)
+      return(as.data.frame(S))
+      'val <- MaxPosition(B = B,S = S,MaxPos = MaxPos)
       BBB <- B[val > 0,]
       SSS <- S[val[S[,2]] > 0,]
       n <- nrow(BBB)
