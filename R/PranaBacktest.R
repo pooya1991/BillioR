@@ -449,7 +449,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
         nEtkp[i] <- l
         nEtkpP[i] <- as.numeric(temp[l,4])
         nEtkpt[i] <- i
-      }
+      }'
       'Etar <- c(C,nEstp,nEtkp)
       etemp <- rep(0,length(C))
       Etra <- c(etemp,nEstpt,nEtkpt)
