@@ -419,7 +419,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
       }
       #Take Profit and Stop Lost
       n <- nrow(B)
-      return(StpLst[1,1])
+      return(TkPrft)
       'for (i in 1:n) {
         tar <- index(B)[i]
         pri <- B[i,1]
