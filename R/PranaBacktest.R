@@ -349,7 +349,8 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
     nEtkp <- vector()
     nEtkpP <- vector()
     nEtkpt <- vector()
-    if(nrow(B) > 0){
+    return(B)
+    'if(nrow(B) > 0){
       n <- length(ExRuls)
       if(n > 0){
         for (i in 1:n) {
@@ -414,6 +415,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
         eval(parse(text = b))
         C <- index(BUY_ExitRu[which(BUY_ExitRu),])
       }
+      return(C)
       #Take Profit and Stop Lost
       n <- nrow(B)
       for (i in 1:n) {
@@ -494,7 +496,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
       Result <- Result[,-2]
       rownames(Result) <- NULL
       repo <- Report(Result = Result,dd = dd,MaxPos = MaxPos)
-    }
+    }'
   }
   repo
 }
