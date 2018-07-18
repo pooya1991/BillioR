@@ -247,7 +247,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
   datamatrix <- dd[,1:5]
   mode(datamatrix) = "numeric"
   dd <- xts(datamatrix,order.by = as.Date(dd[,6]))
-  return(as.data.frame(dd))
+  return(as.data.frame(bb))
   # get the Strategy
   'x <- as.character(Stg)
   Stg <- fromJSON(x)
