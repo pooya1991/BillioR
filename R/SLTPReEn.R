@@ -23,4 +23,5 @@ SLTPReEn <- function(Stg,p,ReType,ReAmm){
     dec_per = re <- p * ((100 - ReAmm)/100)
   )
   Result <- data.frame(StopLost = sl,TakeProfit = tp, ReEnter = re)
+  return(Result)
 }
