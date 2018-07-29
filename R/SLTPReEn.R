@@ -3,24 +3,24 @@ SLTPReEn <- function(Stg,p,ReType,ReAmm){
   x <- as.character(Stg)
   Stg <- fromJSON(x)
   Exit <- Stg[["BUY"]][["Exit"]]
-  sl <- NA
-  tp <- NA
-  re <- NA
+  sl <- 0
+  tp <- 0
+  re <- 0
   if(Exit$StopLost[1,1] == "Percent"){
-    sl <- p * ((100 - Exit$StopLost[1,2])/100)
+    sl <- floor(p * ((100 - Exit$StopLost[1,2])/100))
   }else if(Exit$StopLost[1,1] == "Price"){
-    sl <- p - Exit$StopLost[1,2]
+    sl <- floor(p - Exit$StopLost[1,2])
   }
   if(Exit$TakeProfit[1,1] == "Percent"){
-    tp <- p * ((100 + Exit$TakeProfit[1,2])/100)
+    tp <- floor(p * ((100 + Exit$TakeProfit[1,2])/100))
   }else if(Exit$TakeProfit[1,1] == "Price"){
-    tp <- p + Exit$TakeProfit[1,2]
+    tp <- floor(p + Exit$TakeProfit[1,2])
   }
   switch (ReType,
-    inc_pri = re <- p + ReAmm,
-    inc_per = re <- p * ((ReAmm + 100)/100),
-    dec_pri = re <- p - ReAmm,
-    dec_per = re <- p * ((100 - ReAmm)/100)
+    inc_pri = re <- floor(p + ReAmm),
+    inc_per = re <- floor(p * ((ReAmm + 100)/100)),
+    dec_pri = re <- floor(p - ReAmm),
+    dec_per = re <- floor(p * ((100 - ReAmm)/100))
   )
   Result <- data.frame(StopLost = sl,TakeProfit = tp, ReEnter = re)
   return(Result)
