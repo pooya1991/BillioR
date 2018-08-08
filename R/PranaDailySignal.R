@@ -1,4 +1,4 @@
-PranaBacktest <- function(Stg,Share,Timeframe = "hourly",ShareID){
+PranaDailySignal <- function(Stg,Share,Timeframe = "hourly",ShareID){
   library(jsonlite)
   library(zoo)
   library(xts)
