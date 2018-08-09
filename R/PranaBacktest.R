@@ -90,7 +90,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
     nBp <- vector()
     nBt <- vector()
     k <- 0
-    if(type == "dec_per"){
+    if(type == "Percentage_Below"){
       for (i in 1:n) {
         baz <- paste(tar[i],ta[i],sep = "/")
         temp <- bb[baz]
@@ -109,7 +109,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
           }
         }
       }
-    }else if(type == "dec_pri"){
+    }else if(type == "PriceTick_Below"){
       for (i in 1:n) {
         baz <- paste(tar[i],ta[i],sep = "/")
         temp <- bb[baz]
@@ -128,7 +128,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
           }
         }
       }
-    }else if(type == "inc_per"){
+    }else if(type == "Percentage_Above"){
       for (i in 1:n) {
         baz <- paste(tar[i],ta[i],sep = "/")
         temp <- bb[baz]
@@ -147,7 +147,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
           }
         }
       }
-    }else if(type == "inc_pri"){
+    }else if(type == "PriceTick_Above"){
       for (i in 1:n) {
         baz <- paste(tar[i],ta[i],sep = "/")
         temp <- bb[baz]
@@ -235,9 +235,9 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
     Nat <- vector()
     Nat[a2] <- (Result[a2,1]-Result[a1,1])*Vol
     lis <- data.frame(radif,Result[,3],Result[,2],Result[,1],rep(Vol,nrow(Result)),(Result[,1]*Vol),Nat,doreneg,Trade,Result[,4])
-    colnames(lis) <- c("Radif","Tarikh","Noe Moamele","Gheymat","Hajme Moamele","Arzesh","Sood ya Zian","Dore Negahdari","Shomare Radife kharid","Bazdeh")
+    colnames(lis) <- c("RowNumber","DateTime","Side","Price","OrderVolume","OrderValue","ProfitOrLoss","PreservePeriods","BuyRowNumber","Return")
     Natije <- list(MaxOpenPos,MaxDrwDwn,AcToDeAc,SuccessRate,MeanProfit,TotalRet,TurnOver,MeanLost,TotalVol,lis)
-    names(Natije) <- c("MaxOpenPos","MaxDrwDwn","AcToDeAc","SuccessRate","MeanProfit","TotalRet","TurnOver","MeanLost","TotalVol","Detail")
+    names(Natije) <- c("MaxOpenPosition","MaxConsecutiveDecline","ActiveToDeactiveDaysRatio","SuccessRate","MeanProfit","TotalReturn","TurnOver","MeanLoss","TotalVolume","Detail")
     Natije
   }
   Share <- as.character(Share)
