@@ -82,7 +82,7 @@ PranaDailySignal <- function(Stg,Share,Timeframe = "hourly",ShareID){
   x <- as.character(Stg)
   Stg <- fromJSON(x)
   if(Stg$BUY$Status == "Set"){
-    EnRuls <- Stg$BUY$Enter$Rulls
+    EnRuls <- Stg$BUY$Enter$Rules
     EnRels <- Stg$BUY$Enter$Rels
     n <- length(EnRuls)
     for (i in 1:n) {
