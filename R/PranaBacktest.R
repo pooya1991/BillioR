@@ -250,11 +250,11 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
   x <- as.character(Stg)
   Stg <- fromJSON(x)
   if(Stg$BUY$Status == "Set"){
-    EnRuls <- Stg$BUY$Enter$Rulls
+    EnRuls <- Stg$BUY$Enter$Rules
     EnRels <- Stg$BUY$Enter$Rels
-    ExRuls <- Stg$BUY$Exit$Rulls
+    ExRuls <- Stg$BUY$Exit$Rules
     ExRels <- Stg$BUY$Exit$Rels
-    StpLst <- Stg$BUY$Exit$StopLost
+    StpLst <- Stg$BUY$Exit$StopLoss
     TkPrft <- Stg$BUY$Exit$TakeProfit
     n <- length(EnRuls)
     for (i in 1:n) {
@@ -424,12 +424,12 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
         pri <- B[i,1]
         if(StpLst[1,1] == "Percent"){
           Stp <- as.numeric(floor(pri * ((100 - as.numeric(StpLst[1,2]))/100)))
-        }else{
+        }else if(StpLst[1,1] == "PriceTick"){
           Stp <- as.numeric(pri - StpLst[1,2])
         }
         if(TkPrft[1,1] == "Percent"){
           Prf <- as.numeric(floor(pri * ((100 + as.numeric(TkPrft[1,2]))/100)))
-        }else{
+        }else if(TkPrft[1,1] == "PriceTick"){
           Prf <- as.numeric(pri + TkPrft[1,2])
         }
         baz <- paste(tar,EndDate,sep = "/")
