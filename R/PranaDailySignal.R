@@ -4,7 +4,7 @@ PranaDailySignal <- function(Stg,Share,Timeframe = "hourly",ShareID){
   library(xts)
   library(TTR)
   library(quantmod)
-  day <- 10
+  day <- 11
   # Ichimoku Indicator Function
   ichimoku <- function(HLC, nFast=9, nMed=26, nSlow=52) {
     turningLine <- (runMax(Hi(HLC), nFast)+runMin(Lo(HLC), nFast))/2
