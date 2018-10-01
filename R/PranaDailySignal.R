@@ -152,12 +152,12 @@ PranaDailySignal <- function(Stg,Share,Timeframe = "hourly",ShareID){
     n <- index(dd)[nrow(dd) - day]
     m <- index(BB)[nrow(BB)]
     if(as.Date(m) > n){
-      Result <- data.frame(Ticker = ShareID,Signal = "B",SignalDtae = as.Date(m),PassedDays = as.numeric(t - as.Date(m)),Price = as.numeric(bb[m,4]))
+      Result <- data.frame(Ticker = ShareID,Signal = "B",SignalDate = as.Date(m),PassedDays = as.numeric(t - as.Date(m)),Price = as.numeric(bb[m,4]))
     }else {
-      Result <- data.frame(Ticker = ShareID,Signal = "N",SignalDtae = as.Date(m),PassedDays = as.numeric(t - as.Date(m)),Price = as.numeric(bb[m,4]))
+      Result <- data.frame(Ticker = ShareID,Signal = "N",SignalDate = as.Date(m),PassedDays = as.numeric(t - as.Date(m)),Price = as.numeric(bb[m,4]))
     }
   }else{
-    Result <- data.frame(Ticker = ShareID,Signal = "N",SignalDtae = Sys.Date(),PassedDays = 10,Price = as.numeric(dd[nrow(dd),4]))
+    Result <- data.frame(Ticker = ShareID,Signal = "N",SignalDate = Sys.Date(),PassedDays = 10,Price = as.numeric(dd[nrow(dd),4]))
   }
   
   res <- list(Result = Result)
