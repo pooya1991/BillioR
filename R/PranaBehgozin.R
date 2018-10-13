@@ -232,7 +232,7 @@ PranaBehgozin <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
     }
     m <- length(unique(temtar))
     Natije <- list(validation, TickerIDRe, TotalRet, SuccessRatedu, MaxDrwDwn, MaxOpenPos, m, n, nSucDeal, (n - nSucDeal))
-    names(Natije) <- c("Validation", "TickerID","TotalReturn","SuccessRate","MaxConsecutiveDecline","MaxOpenPositions","ActivedaysNumber","AllDealsNumber","TurnOver","DealsWithProfitNumber","DealswithLossNumber")
+    names(Natije) <- c("Validation", "TickerID","TotalReturn","SuccessRate","MaxConsecutiveDecline","MaxOpenPositions","ActivedaysNumber","AllDealsNumber","DealsWithProfitNumber","DealswithLossNumber")
     Natije
   }
   Share <- as.character(Share)
