@@ -197,7 +197,7 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
     n <- nrow(Result) / 2
     Trade <- rep(c(1:n),each = 2)
     nSucDeal <- nrow(Result[Result[,4] > 0 & !is.na(Result[,4]),])
-    SuccessRatedu <- nSucDeal / n
+    SuccessRatedu <- (nSucDeal / n) * 100
     MaxDrwDwn <- min(Result[Result[,4] <= 0 & !is.na(Result[,4]),4])
     TotalRet <- cumprod(1 + Result[!is.na(Result[,4]),4])[n] - 1
     validation <- FALSE
