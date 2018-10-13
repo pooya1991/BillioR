@@ -1,4 +1,4 @@
-PranaBehgozin <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-01-01",EndDate = Sys.Date(),Vol = 1000,MaxPos = 10,Fee = T,Over = T,ReEnterType = 0,ReEnterAmm = 0, SuccessRate = 50, TotalReturn = 30, TickerID){
+PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01",EndDate = Sys.Date(),Vol = 1000,MaxPos = 10,Fee = T,Over = T,ReEnterType = 0,ReEnterAmm = 0, SuccessRate = 50, TotalReturn = 30, TickerID){
   library(jsonlite)
   library(zoo)
   library(xts)
@@ -232,7 +232,7 @@ PranaBehgozin <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
     }
     m <- length(unique(temtar))
     Natije <- list(validation, TickerIDRe, TotalRet, SuccessRatedu, MaxDrwDwn, MaxOpenPos, m, n, nSucDeal, (n - nSucDeal))
-    names(Natije) <- c("Validation", "TickerID","TotalReturn","SuccessRate","MaxConsecutiveDecline","MaxOpenPositions","ActivedaysNumber","AllDealsNumber","DealsWithProfitNumber","DealswithLossNumber")
+    names(Natije) <- c("Validation", "Ticker","TotalReturn","SuccessRate","MaxConsecutiveDecline","MaxOpenPositions","ActivedaysNumber","AllDealsNumber","DealsWithProfitNumber","DealswithLossNumber")
     Natije
   }
   Share <- as.character(Share)
