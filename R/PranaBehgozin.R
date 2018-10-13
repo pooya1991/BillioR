@@ -491,7 +491,7 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
       Result <- data.frame(Transaction,TT,Tar,Ret)
       Result <- Result[,-2]
       rownames(Result) <- NULL
-      repo <- Report(Result = Result,dd = dd,MaxPos = MaxPos)
+      repo <- Report(Result = Result,dd = dd,MaxPos = MaxPos,SuccessRateRe = SuccessRate, TotalReturnRe = TotalReturn, TickerIDRe = TickerID)
     }
   }
   repo
