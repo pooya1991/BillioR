@@ -303,7 +303,7 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
       for (j in 1:m) {
         Ind <- EnRuls[[i]]$Indicators[[j]][[1]]
         l <- length(EnRuls[[i]]$Indicators[[j]]$Parameters)
-        indslag <- EnRuls[i,1][[1]][j,]$Lag
+        indslag <- EnRuls[[i]]$Indicators[[j]]$Lag
         qq <- ""
         for (t in 1:l) {
           qq <- paste(qq,EnRuls[[i]]$Indicators[[j]]$Parameters[[t]][,2],sep = ",")
