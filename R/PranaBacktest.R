@@ -5,6 +5,10 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
   library(TTR)
   library(quantmod)
   library(dplyr)
+  library(MASS)
+  library(Boom)
+  library(BoomSpikeSlab)
+  library(bsts)
   RealTime <- function(x, t) {
     switch (x,
             time = result <- strftime(t,"%H:%M:%OS"),

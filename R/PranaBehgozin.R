@@ -5,6 +5,10 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
   library(TTR)
   library(quantmod)
   library(dplyr)
+  library(MASS)
+  library(Boom)
+  library(BoomSpikeSlab)
+  library(bsts)
   RealTime <- function(x, t) {
     switch (x,
             time = result <- strftime(t,"%H:%M:%OS"),
