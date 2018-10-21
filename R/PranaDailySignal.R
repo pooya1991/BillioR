@@ -17,6 +17,13 @@ PranaDailySignal <- function(Stg,Share,Timeframe = "hourly",ShareID){
     result <- paste(vaght,rooz,sep = "")
     return(result)
   }
+  Low <- "Low"
+  High <- "High"
+  Open <- "Open"
+  Close <- "Close"
+  HL <- "HL"
+  HLC <- "HLC"
+  HLCC <- "HLCC"
   Highest <- function(OHLC,Interval,COLUMN){
     switch (COLUMN,
             Close = result <- runMax(OHLC[,4],Interval),
@@ -138,8 +145,10 @@ PranaDailySignal <- function(Stg,Share,Timeframe = "hourly",ShareID){
         l <- length(EnRuls[[i]]$Indicators[[j]]$Parameters)
         indslag <- EnRuls[[i]]$Indicators[[j]]$Lag
         qq <- ""
-        for (t in 1:l) {
-          qq <- paste(qq,EnRuls[[i]]$Indicators[[j]]$Parameters[[t]][,2],sep = ",")
+        if(l > 0){
+          for (t in 1:l) {
+            qq <- paste(qq,EnRuls[[i]]$Indicators[[j]]$Parameters[[t]][,2],sep = ",")
+          }
         }
         k <- which(Indo[,21] == Ind)
         if(indslag > 0){
@@ -190,7 +199,7 @@ PranaDailySignal <- function(Stg,Share,Timeframe = "hourly",ShareID){
       for (s in 1:n) {
         q <- paste(q,EnRels[[s]],"rull_",s+1,sep = "")
       }
-      q <- gsub("OR", " || ", q)
+      q <- gsub("OR", " | ", q)
       q <- gsub("AND", " & ", q)
     }
     b <- paste("BUY_Enter <- (",q,")",sep = "")

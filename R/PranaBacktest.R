@@ -4,12 +4,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
   library(xts)
   library(TTR)
   library(quantmod)
-  library(googlesheets)
   library(dplyr)
-  library(BoomSpikeSlab)
-  library(Boom)
-  library(MASS)
-  library(bsts)
   RealTime <- function(x, t) {
     switch (x,
             time = result <- strftime(t,"%H:%M:%OS"),
@@ -22,6 +17,13 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
     result <- paste(vaght,rooz,sep = "")
     return(result)
   }
+  Low <- "Low"
+  High <- "High"
+  Open <- "Open"
+  Close <- "Close"
+  HL <- "HL"
+  HLC <- "HLC"
+  HLCC <- "HLCC"
   Highest <- function(OHLC,Interval,COLUMN){
     switch (COLUMN,
             Close = result <- runMax(OHLC[,4],Interval),
@@ -230,9 +232,9 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
       if(b >= 0){
         k <- k + b + 1
       }else{
-        tt <- b + 1 + k + MaxPos
-        k <- MaxPos + abs(b) + k
-        ss <- k -1
+        tt <- k + MaxPos
+        k <- MaxPos + k + abs(b)
+        ss <- k - 1
         val[tt:ss] <- 0
       }
     }
@@ -253,11 +255,11 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
     a2 <- 2*a1
     reE <- Result[a2,]
     reS <- Result[a1,]
+    reE[,3] <- as.POSIXct(reE[,3])
+    reS[,3] <- as.POSIXct(reS[,3])
     for (i in 1:n) {
-      ii <- (2 * i) - 1
-      jj <- 2 * i
-      t <- Result[ii,3]
-      tt <- Result[jj,3]
+      t <- reE[i,3]
+      tt <- reS[j,3]
       a <- which((reE[,3] <= tt) & (reE[,3] >= t))
       OpenPos[i] <- length(a)
     }
@@ -310,8 +312,10 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
         l <- length(EnRuls[[i]]$Indicators[[j]]$Parameters)
         indslag <- EnRuls[[i]]$Indicators[[j]]$Lag
         qq <- ""
-        for (t in 1:l) {
-          qq <- paste(qq,EnRuls[[i]]$Indicators[[j]]$Parameters[[t]][,2],sep = ",")
+        if(l > 0){
+          for (t in 1:l) {
+            qq <- paste(qq,EnRuls[[i]]$Indicators[[j]]$Parameters[[t]][,2],sep = ",")
+          }
         }
         k <- which(Indo[,21] == Ind)
         if(indslag > 0){
@@ -362,11 +366,18 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
       for (s in 1:n) {
         q <- paste(q,EnRels[[s]],"rull_",s+1,sep = "")
       }
-      q <- gsub("OR", " || ", q)
+      q <- gsub("OR", " | ", q)
       q <- gsub("AND", " & ", q)
     }
     b <- paste("BUY_Enter <- (",q,")",sep = "")
     eval(parse(text = b))
+    if(length(BUY_Enter) < 1){
+      lis <- data.frame(0,0,0,0,0,0,0,0,0,0)
+      colnames(lis) <- c("RowNumber","DateTime","Side","Price","OrderVolume","OrderValue","ProfitOrLoss","PreservePeriods","BuyRowNumber","Return")
+      Natije <- list(0,0,0,0,0,0,0,0,0,lis)
+      names(Natije) <- c("MaxOpenPosition","MaxConsecutiveDecline","ActiveToDeactiveDaysRatio","SuccessRate","MeanProfit","TotalReturn","TurnOver","MeanLoss","TotalVolume","Detail")
+      return(Natije)
+    }
     BB <- BUY_Enter[which(BUY_Enter),]
     #check overbuy of the signal
     if(Over){
@@ -377,7 +388,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
       BB <- BB[ov == 1,]
     }
     #ReEnter in a position
-    if(ReEnterType !=0){
+    if(ReEnterType =="Percentage_Above" | ReEnterType =="Percentage_Below" | ReEnterType =="PriceTick_Above" | ReEnterType =="PriceTick_Below"){
       B <- ReEnt(B=BB,bb=bb,type = ReEnterType,amm = ReEnterAmm)
     }else{
       n <- nrow(BB)
@@ -386,13 +397,6 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
       pp <- as.numeric(bb[tar,4])
       BB <- data.frame(Price = pp,Trade = nn)
       B <- xts(BB,order.by = tar)
-    }
-    if(Over){
-      ta <- as.Date(index(B))
-      n <- length(ta)
-      ov <- vector("numeric",n)
-      ov[dd[ta,4] / dd[ta,1] < 1.05] <- 1
-      B <- B[ov == 1,]
     }
     #Evaluate Exit Conditions
     C <- vector()
@@ -476,11 +480,15 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
           Stp <- as.numeric(floor(pri * ((100 - as.numeric(StpLst[1,2]))/100)))
         }else if(StpLst[1,1] == "PriceTick"){
           Stp <- as.numeric(pri - StpLst[1,2])
+        } else {
+          Stp <- as.numeric(pri * 1000)
         }
         if(TkPrft[1,1] == "Percent"){
           Prf <- as.numeric(floor(pri * ((100 + as.numeric(TkPrft[1,2]))/100)))
         }else if(TkPrft[1,1] == "PriceTick"){
           Prf <- as.numeric(pri + TkPrft[1,2])
+        } else {
+          Prf <- as.numeric(pri * 1000)
         }
         baz <- paste(tar,EndDate,sep = "/")
         temp <- bb[baz]
@@ -492,10 +500,10 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
         if(is.na(l)){
           l <- index(tail(temp,1))
         }
-        nEstp[i] <- m
+        nEstp[i] <- as.character(m)
         nEstpP[i] <- as.numeric(temp[m,4])
         nEstpt[i] <- i
-        nEtkp[i] <- l
+        nEtkp[i] <- as.character(l)
         nEtkpP[i] <- as.numeric(temp[l,4])
         nEtkpt[i] <- i
       }
@@ -508,7 +516,7 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
         Epri[i] <- as.numeric(bb[Etar[i],4])
       }
       val <- rep(1,m)
-      forush <- xts(data.frame(Price = Epri,Trade = Etra, valid = val),order.by = Etar)
+      forush <- xts(data.frame(Price = Epri,Trade = Etra, valid = val),order.by = as.POSIXlt(Etar))
       n <- nrow(B)
       S <- as.data.frame(B[1,])
       STar <- vector()
