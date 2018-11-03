@@ -465,7 +465,7 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
           }
         }
         q <- "rull_1"
-        if(length(ExRuls) > 1){
+        if(nrow(ExRuls) > 1){
           n <- n - 1
           for (s in 1:n) {
             q <- paste(q,EnRels[s],"rull_",s+1,sep = "")
