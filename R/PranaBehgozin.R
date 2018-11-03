@@ -121,7 +121,7 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
            WMA = result <- WMA(bb[,4],n),
            EVWMA = result <- EVWMA(bb[,4],n),
            ZLEMA = result <- ZLEMA(bb[,4],n),
-           VWAP = result <- VWAP(bb[,4],n),
+           VWAP = result <- VWAP(bb[,4],bb[,5],n),
            VMA = result <- VMA(bb[,4],n),
            HMA = result <- HMA(bb[,4],n),
            ALMA = result <- ALMA(bb[,4],n,m,p)
@@ -302,18 +302,18 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
     ExRels <- Stg$BUY$Exit$Rels
     StpLst <- Stg$BUY$Exit$StopLoss
     TkPrft <- Stg$BUY$Exit$TakeProfit
-    n <- length(EnRuls)
+    n <- nrow(EnRuls)
     for (i in 1:n) {
-      m <- length(EnRuls[[i]]$Indicators)
+      m <- length(EnRuls[[1]][[i]]$Indicator)
       qqq <-"Ind_1"
       for (j in 1:m) {
-        Ind <- EnRuls[[i]]$Indicators[[j]][[1]]
-        l <- length(EnRuls[[i]]$Indicators[[j]]$Parameters)
-        indslag <- EnRuls[[i]]$Indicators[[j]]$Lag
+        Ind <- EnRuls[[1]][[i]]$Indicator[[j]]
+        l <- nrow(EnRuls[[1]][[i]]$Parameters[[j]])
+        indslag <- EnRuls[[1]][[i]]$Lag[[j]]
         qq <- ""
         if(l > 0){
           for (t in 1:l) {
-            qq <- paste(qq,EnRuls[[i]]$Indicators[[j]]$Parameters[[t]][,2],sep = ",")
+            qq <- paste(qq,EnRuls[[1]][[i]]$Parameters[[j]][t,2],sep = ",")
           }
         }
         k <- which(Indo[,21] == Ind)
@@ -325,9 +325,9 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
         eval(parse(text = b))
       }
       m <- m - 1
-      if(EnRuls[[i]]$Math[[m]] == "cross<"){
+      if(EnRuls[[2]][[i]][m] == "cross<"){
         for (s in 1:m) {
-          qqq <- paste(qqq,EnRuls[[i]]$Math[[s]],"Ind_",s+1,sep = "")
+          qqq <- paste(qqq,EnRuls[[2]][[i]][s],"Ind_",s+1,sep = "")
         }
         a1 <- gsub("cross<",">=",qqq)
         b <- paste("c1 <- ",a1,sep = "")
@@ -338,9 +338,9 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
         c2 <- lag(c2,1)
         b <- paste("rull_",i," <- (c1 & c2)",sep = "")
         eval(parse(text = b))
-      }else if(EnRuls[[i]]$Math[[m]] == "cross>"){
+      }else if(EnRuls[[2]][[i]][m] == "cross>"){
         for (s in 1:m) {
-          qqq <- paste(qqq,EnRuls[[i]]$Math[[s]],"Ind_",s+1,sep = "")
+          qqq <- paste(qqq,EnRuls[[2]][[i]][s],"Ind_",s+1,sep = "")
         }
         a1 <- gsub("cross>","<=",qqq)
         b <- paste("c1 <- ",a1,sep = "")
@@ -353,32 +353,48 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
         eval(parse(text = b))
       }else{
         for (s in 1:m) {
-          qqq <- paste(qqq,EnRuls[[i]]$Math[[s]],"Ind_",s+1,sep = "")
+          qqq <- paste(qqq,EnRuls[[2]][[i]][s],"Ind_",s+1,sep = "")
         }
         b <- paste("rull_",i," <- (",qqq,")",sep = "")
         eval(parse(text = b))
       }
     }
     q <- "rull_1"
-    if(length(EnRuls) > 1){
+    if(n > 1){
       n <- n - 1
       for (s in 1:n) {
-        q <- paste(q,EnRels[[s]],"rull_",s+1,sep = "")
+        q <- paste(q,EnRels[s],"rull_",s+1,sep = "")
       }
-      q <- gsub("OR", " | ", q)
-      q <- gsub("AND", " & ", q)
+      q <- gsub("or", " | ", q)
+      q <- gsub("and", " & ", q)
     }
     b <- paste("BUY_Enter <- (",q,")",sep = "")
     eval(parse(text = b))
     if(length(BUY_Enter) < 1){
-      Natije <- list(FALSE,ShareID,0,0,0,0,0,0,0,0)
-      names(Natije) <- c("Validation", "Ticker","TotalReturn","SuccessRate","MaxConsecutiveDecline","MaxOpenPositions","ActivedaysNumber","AllDealsNumber","DealsWithProfitNumber","DealswithLossNumber")
+      lis <- data.frame(0,0,0,0,0,0,0,0,0,0)
+      colnames(lis) <- c("RowNumber","DateTime","Side","Price","OrderVolume","OrderValue","ProfitOrLoss","PreservePeriods","BuyRowNumber","Return")
+      Natije <- list(0,0,0,0,0,0,0,0,0,lis)
+      names(Natije) <- c("MaxOpenPosition","MaxConsecutiveDecline","ActiveToDeactiveDaysRatio","SuccessRate","MeanProfit","TotalReturn","TurnOver","MeanLoss","TotalVolume","Detail")
       return(Natije)
     }
     BB <- BUY_Enter[which(BUY_Enter),]
-
+    if(length(BB) < 1){
+      lis <- data.frame(0,0,0,0,0,0,0,0,0,0)
+      colnames(lis) <- c("RowNumber","DateTime","Side","Price","OrderVolume","OrderValue","ProfitOrLoss","PreservePeriods","BuyRowNumber","Return")
+      Natije <- list(0,0,0,0,0,0,0,0,0,lis)
+      names(Natije) <- c("MaxOpenPosition","MaxConsecutiveDecline","ActiveToDeactiveDaysRatio","SuccessRate","MeanProfit","TotalReturn","TurnOver","MeanLoss","TotalVolume","Detail")
+      return(Natije)
+    }
+    #check overbuy of the signal
+    if(Over){
+      ta <- as.Date(index(BB))
+      n <- length(ta)
+      ov <- vector("numeric",n)
+      ov[dd[ta,4] / dd[ta,1] < 1.05] <- 1
+      BB <- BB[ov == 1,]
+    }
     #ReEnter in a position
-    if(ReEnterType !=0){
+    if(ReEnterType =="Percentage_Above" | ReEnterType =="Percentage_Below" | ReEnterType =="PriceTick_Above" | ReEnterType =="PriceTick_Below"){
       B <- ReEnt(B=BB,bb=bb,type = ReEnterType,amm = ReEnterAmm)
     }else{
       n <- nrow(BB)
@@ -397,26 +413,26 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
     nEtkpP <- vector()
     nEtkpt <- vector()
     if(nrow(B) > 0){
-      n <- length(ExRuls)
+      n <- nrow(ExRuls)
       if(n > 0){
         for (i in 1:n) {
-          m <- length(ExRuls[[i]]$Indicators)
+          m <- length(ExRuls[[1]][[i]]$Indicator)
           qqq <-"Ind_1"
           for (j in 1:m) {
-            Ind <- ExRuls[[i]]$Indicators[[j]][[1]]
-            l <- length(ExRuls[[i]]$Indicators[[j]]$Parameters)
+            Ind <- ExRuls[[1]][[i]]$Indicator[[j]]
+            l <- nrow(ExRuls[[1]][[i]]$Parameters[[j]])
             qq <- ""
             for (t in 1:l) {
-              qq <- paste(qq,ExRuls[[i]]$Indicators[[j]]$Parameters[[t]][,2],sep = ",")
+              qq <- paste(qq,ExRuls[[1]][[i]]$Parameters[[j]][t,2],sep = ",")
             }
             k <- which(Indo[,21] == Ind)
             b <- paste("Ind_",j," <- Indis(bb = bb,FUN = Indo[k,1]",qq, ")[,Indo[k,22]]", sep = "")
             eval(parse(text = b))
           }
           m <- m - 1
-          if(ExRuls[[i]]$Math[[m]] == "cross<"){
+          if(ExRuls[[2]][m] == "cross<"){
             for (s in 1:m) {
-              qqq <- paste(qqq,ExRuls[[i]]$Math[[s]],"Ind_",s+1,sep = "")
+              qqq <- paste(qqq,ExRuls[[2]][[i]][s],"Ind_",s+1,sep = "")
             }
             a1 <- gsub("cross<",">=",qqq)
             b <- paste("c1 <- ",a1,sep = "")
@@ -427,9 +443,9 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
             c2 <- lag(c2,1)
             b <- paste("rull_",i," <- (c1 & c2)",sep = "")
             eval(parse(text = b))
-          }else if(ExRuls[[i]]$Math[[m]] == "cross>"){
+          }else if(ExRuls[[2]][[i]][m] == "cross>"){
             for (s in 1:m) {
-              qqq <- paste(qqq,ExRuls[[i]]$Math[[s]],"Ind_",s+1,sep = "")
+              qqq <- paste(qqq,ExRuls[[2]][[i]][s],"Ind_",s+1,sep = "")
             }
             a1 <- gsub("cross>","<=",qqq)
             b <- paste("c1 <- ",a1,sep = "")
@@ -442,7 +458,7 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
             eval(parse(text = b))
           }else{
             for (s in 1:m) {
-              qqq <- paste(qqq,ExRuls[[i]]$Math[[s]],"Ind_",s+1,sep = "")
+              qqq <- paste(qqq,ExRuls[[2]][[i]][s],"Ind_",s+1,sep = "")
             }
             b <- paste("rull_",i," <- (",qqq,")",sep = "")
             eval(parse(text = b))
@@ -452,10 +468,10 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
         if(length(ExRuls) > 1){
           n <- n - 1
           for (s in 1:n) {
-            q <- paste(q,EnRels[[s]],"rull_",s+1,sep = "")
+            q <- paste(q,EnRels[s],"rull_",s+1,sep = "")
           }
-          q <- gsub("OR", " || ", q)
-          q <- gsub("AND", " & ", q)
+          q <- gsub("or", " | ", q)
+          q <- gsub("and", " & ", q)
         }
         b <- paste("BUY_ExitRu <- (",q,")",sep = "")
         eval(parse(text = b))
@@ -466,19 +482,23 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
       for (i in 1:n) {
         tar <- index(B)[i]
         pri <- B[i,1]
-        if(StpLst[1,1] == "Percent"){
-          Stp <- as.numeric(floor(pri * ((100 - as.numeric(StpLst[1,2]))/100)))
-        }else if(StpLst[1,1] == "PriceTick"){
-          Stp <- as.numeric(pri - StpLst[1,2])
-        } else {
+        if(is.null(StpLst)){
           Stp <- as.numeric(pri * 1000)
-        }
-        if(TkPrft[1,1] == "Percent"){
-          Prf <- as.numeric(floor(pri * ((100 + as.numeric(TkPrft[1,2]))/100)))
-        }else if(TkPrft[1,1] == "PriceTick"){
-          Prf <- as.numeric(pri + TkPrft[1,2])
         }else {
+          if(StpLst[1,1] == "Percent"){
+            Stp <- as.numeric(floor(pri * ((100 - as.numeric(StpLst[1,2]))/100)))
+          }else if(StpLst[1,1] == "PriceTick"){
+            Stp <- as.numeric(pri - StpLst[1,2])
+          }
+        }
+        if(is.null(TkPrft)){
           Prf <- as.numeric(pri * 1000)
+        }else {
+          if(TkPrft[1,1] == "Percent"){
+            Prf <- as.numeric(floor(pri * ((100 + as.numeric(TkPrft[1,2]))/100)))
+          }else if(TkPrft[1,1] == "PriceTick"){
+            Prf <- as.numeric(pri + TkPrft[1,2])
+          }
         }
         baz <- paste(tar,EndDate,sep = "/")
         temp <- bb[baz]
