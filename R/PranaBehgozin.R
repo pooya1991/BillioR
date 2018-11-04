@@ -517,6 +517,7 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
         nEtkpP[i] <- as.numeric(temp[l,4])
         nEtkpt[i] <- i
       }
+      C <- as.character(C)
       Etar <- c(C,nEstp,nEtkp)
       etemp <- rep(0,length(C))
       Etra <- c(etemp,nEstpt,nEtkpt)
