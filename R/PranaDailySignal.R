@@ -194,7 +194,7 @@ PranaDailySignal <- function(Stg,Share,Timeframe = "hourly",ShareID){
       }
     }
     q <- "rull_1"
-    if(length(EnRuls) > 1){
+    if(n > 1){
       n <- n - 1
       for (s in 1:n) {
         q <- paste(q,EnRels[s],"rull_",s+1,sep = "")
