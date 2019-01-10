@@ -1,5 +1,5 @@
 PranaDailySignal <- function(Stg,Share,Timeframe = "hourly",ShareID){
-  library(jsonlite)
+  requireNamespace("jsonlite")
   library(zoo)
   library(xts)
   library(TTR)
@@ -125,14 +125,14 @@ PranaDailySignal <- function(Stg,Share,Timeframe = "hourly",ShareID){
     result
   }
   Share <- as.character(Share)
-  db <- fromJSON(Share)
+  db <- jsonlite::fromJSON(Share)
   bb <- db[[1]]
   bb <- xts(bb[,1:5],order.by = as.POSIXct(bb[,6]))
   dd <- db[[2]]
   dd <- xts(dd[,1:5],order.by = as.Date(dd[,6]))
   # get the Strategy
   x <- as.character(Stg)
-  Stg <- fromJSON(x)
+  Stg <- jsonlite::fromJSON(x)
   if(Stg$BUY$Status == "Set"){
     EnRuls <- Stg$BUY$Enter$Rules
     EnRels <- Stg$BUY$Enter$Rels
