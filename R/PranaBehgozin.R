@@ -287,11 +287,17 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
     Natije
   }
   Share <- as.character(Share)
-  db <- fromJSON(Share, simplify = F)
+  db <- fromJSON(Share, simplify = T)
   bb <- db[[1]]
-  bb <- xts(bb[,1:5],order.by = as.POSIXct(bb[,6]))
+  bbd <- data.frame(bb[[1]],bb[[2]],bb[[3]],bb[[4]],bb[[5]])
+  colnames(bbd) <- c("Open", "High", "Low", "Close", "Volume")
+  bbda <- bb[[6]]
+  bb <- xts(bbd,order.by = as.POSIXct(bbda, origin = "1970-01-01"))
   dd <- db[[2]]
-  dd <- xts(dd[,1:5],order.by = as.Date(dd[,6]))
+  ddd <- data.frame(dd[[1]],dd[[2]],dd[[3]],dd[[4]],dd[[5]])
+  colnames(ddd) <- c("Open", "High", "Low", "Close", "Volume")
+  ddda <- dd[[6]]
+  dd <- xts(ddd,order.by = as.Date(ddda))
   # get the Strategy
   x <- as.character(Stg)
   Stg <- fromJSON(x)
