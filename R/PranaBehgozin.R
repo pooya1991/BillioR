@@ -287,7 +287,7 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
     Natije
   }
   Share <- as.character(Share)
-  db <- fromJSON(Share)
+  db <- fromJSON(Share, simplify = F)
   bb <- db[[1]]
   bb <- xts(bb[,1:5],order.by = as.POSIXct(bb[,6]))
   dd <- db[[2]]
