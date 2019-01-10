@@ -1,5 +1,4 @@
 ShareData <- function(share,timeframe = "hourly",sdate = "2014-01-01",edate = Sys.Date()){
-  library(rjson)
   library(zoo)
   library(xts)
   library(quantmod)
@@ -42,5 +41,5 @@ ShareData <- function(share,timeframe = "hourly",sdate = "2014-01-01",edate = Sy
   colnames(nat) <- c("Open","High","Low","Close","Volume","Time")
   row.names(nat) <- NULL
   res <- list(Data = result,Daily = nat)
-  toJSON(res)
+  res
 }

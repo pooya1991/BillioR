@@ -1,5 +1,5 @@
 PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01",EndDate = Sys.Date(),Vol = 1000,MaxPos = 10,Fee = T,Over = T,ReEnterType = 0,ReEnterAmm = 0, SuccessRate = 50, TotalReturn = 30, TickerID = "IRO1APPE0001"){
-  library(rjson)
+  library(jsonlite)
   library(zoo)
   library(xts)
   library(TTR)
@@ -287,17 +287,11 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
     Natije
   }
   Share <- as.character(Share)
-  db <- fromJSON(Share, simplify = T)
+  db <- fromJSON(Share)
   bb <- db[[1]]
-  bbd <- data.frame(bb[[1]],bb[[2]],bb[[3]],bb[[4]],bb[[5]])
-  colnames(bbd) <- c("Open", "High", "Low", "Close", "Volume")
-  bbda <- bb[[6]]
-  bb <- xts(bbd,order.by = as.POSIXct(bbda, origin = "1970-01-01"))
+  bb <- xts(bb[,1:5],order.by = as.POSIXct(bb[,6]))
   dd <- db[[2]]
-  ddd <- data.frame(dd[[1]],dd[[2]],dd[[3]],dd[[4]],dd[[5]])
-  colnames(ddd) <- c("Open", "High", "Low", "Close", "Volume")
-  ddda <- dd[[6]]
-  dd <- xts(ddd,order.by = as.Date(ddda))
+  dd <- xts(dd[,1:5],order.by = as.Date(dd[,6]))
   # get the Strategy
   x <- as.character(Stg)
   Stg <- fromJSON(x)
