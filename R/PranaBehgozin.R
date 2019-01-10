@@ -1,4 +1,4 @@
-PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01",EndDate = Sys.Date(),Vol = 1000,MaxPos = 10,Fee = T,Over = T,ReEnterType = 0,ReEnterAmm = 0, SuccessRate = 50, TotalReturn = 30, TickerID){
+PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01",EndDate = Sys.Date(),Vol = 1000,MaxPos = 10,Fee = T,Over = T,ReEnterType = 0,ReEnterAmm = 0, SuccessRate = 50, TotalReturn = 30, TickerID = "IRO1APPE0001"){
   library(jsonlite)
   library(zoo)
   library(xts)
