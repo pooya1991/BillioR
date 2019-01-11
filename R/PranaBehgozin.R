@@ -282,8 +282,8 @@ PranaBehgozin <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01
       temtar <- c(temtar,index(dd[baz]))
     }
     m <- length(unique(temtar))
-    Natije <- data.frame(validation, TickerIDRe, TotalRet, SuccessRatedu, MaxDrwDwn, MaxOpenPos, m, n, nSucDeal, (n - nSucDeal))
-    colnames(Natije) <- c("Validation", "Ticker","TotalReturn","SuccessRate","MaxConsecutiveDecline","MaxOpenPositions","ActivedaysNumber","AllDealsNumber","DealsWithProfitNumber","DealswithLossNumber")
+    Natije <- vector(validation, TickerIDRe, TotalRet, SuccessRatedu, MaxDrwDwn, MaxOpenPos, m, n, nSucDeal, (n - nSucDeal))
+    names(Natije) <- c("Validation", "Ticker","TotalReturn","SuccessRate","MaxConsecutiveDecline","MaxOpenPositions","ActivedaysNumber","AllDealsNumber","DealsWithProfitNumber","DealswithLossNumber")
     Natije
   }
   Share <- as.character(Share)
