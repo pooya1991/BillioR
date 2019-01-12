@@ -290,9 +290,10 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
     Nat[a2] <- (Result[a2,1]-Result[a1,1])*Vol
     lis <- data.frame(radif,Result[,3],Result[,2],Result[,1],rep(Vol,nrow(Result)),(Result[,1]*Vol),Nat,doreneg,Trade,Result[,4])
     colnames(lis) <- c("RowNumber","DateTime","Side","Price","OrderVolume","OrderValue","ProfitOrLoss","PreservePeriods","BuyRowNumber","Return")
-    Natije <- list(MaxOpenPos,MaxDrwDwn,AcToDeAc,SuccessRate,MeanProfit,TotalRet,TurnOver,MeanLost,TotalVol,lis)
-    names(Natije) <- c("MaxOpenPosition","MaxConsecutiveDecline","ActiveToDeactiveDaysRatio","SuccessRate","MeanProfit","TotalReturn","TurnOver","MeanLoss","TotalVolume","Detail")
-    Natije
+    Natije <- data.frame(MaxOpenPos,MaxDrwDwn,AcToDeAc,SuccessRate,MeanProfit,TotalRet,TurnOver,MeanLost,TotalVol)
+    names(Natije) <- c("MaxOpenPosition","MaxConsecutiveDecline","ActiveToDeactiveDaysRatio","SuccessRate","MeanProfit","TotalReturn","TurnOver","MeanLoss","TotalVolume")
+    finalresult <- list(overal_result = Natije, details= lis)
+    finalresult
   }
   Share <- as.character(Share)
   db <- jsonlite::fromJSON(Share)
