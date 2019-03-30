@@ -422,7 +422,11 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
     nEtkpP <- vector()
     nEtkpt <- vector()
     if(nrow(B) > 0){
-      n <- nrow(ExRuls)
+      if(is.null(ExRuls)) {
+        n = 0
+      } else {
+        n <- nrow(ExRuls)
+      }
       if(n > 0){
         for (i in 1:n) {
           m <- length(ExRuls[[1]][[i]]$Indicator)
