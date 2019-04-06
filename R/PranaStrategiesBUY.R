@@ -130,7 +130,8 @@ PranaStrategiesBuy <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-
            HMA = result <- HMA(bb[,4],n),
            ALMA = result <- ALMA(bb[,4],n,m,p)
     )
-    result
+    
+    return(result)
   }
   
   Report <- function(B, P){
@@ -148,7 +149,6 @@ PranaStrategiesBuy <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-
   Stg <- fromJSON(x)
   if(Stg$BUY$Status == "Set"){
     EnRuls <- Stg$BUY$Enter$Rulls
-    EnRuls
     EnRels <- Stg$BUY$Enter$Rels
     n <- length(EnRuls)
     for (i in 1:n) {
