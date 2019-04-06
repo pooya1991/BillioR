@@ -1,5 +1,6 @@
 PranaStrategiesBuy <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01",EndDate = Sys.Date()){
-  library(jsonlite)
+  
+  requireNamespace("jsonlite")
   library(zoo)
   library(xts)
   library(TTR)
@@ -131,6 +132,7 @@ PranaStrategiesBuy <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-
     )
     result
   }
+  
   Report <- function(B, P){
     res <- list(Buy = B, Price = P)
     return(res)
