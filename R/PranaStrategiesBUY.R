@@ -71,7 +71,8 @@ PranaStrategiesBuy <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-
     return (out)
   }
   
-  return("Hello")
+  "Hello"
+  
   # Indicators function
   Indis <- function(bb,FUN,n,m,p,q){
     switch(FUN,
@@ -135,6 +136,8 @@ PranaStrategiesBuy <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-
     
     result
   }
+  
+  "Help"
   
   Report <- function(B, P){
     res <- list(Buy = B, Price = P)
