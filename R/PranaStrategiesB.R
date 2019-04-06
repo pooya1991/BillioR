@@ -1,6 +1,5 @@
-PranaStrategiesBuy <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01",EndDate = Sys.Date()){
-  
-  library(jsonlite)
+PranaStrategiesB <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-01-01",EndDate = Sys.Date()){
+  requireNamespace("jsonlite")
   library(zoo)
   library(xts)
   library(TTR)
@@ -70,9 +69,6 @@ PranaStrategiesBuy <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-
     colnames(out) <- c("turnLine", "baseLine", "spanA", "spanB", "plotLagSpan", "laggingSpan", "lagSpanA","lagSpanB")
     return (out)
   }
-  
-  "Hello"
-  
   # Indicators function
   Indis <- function(bb,FUN,n,m,p,q){
     switch(FUN,
@@ -133,11 +129,8 @@ PranaStrategiesBuy <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-
            HMA = result <- HMA(bb[,4],n),
            ALMA = result <- ALMA(bb[,4],n,m,p)
     )
-    
     result
   }
-  
-  "Help"
   
   Report <- function(B, P){
     res <- list(Buy = B, Price = P)
@@ -216,7 +209,7 @@ PranaStrategiesBuy <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-
     }
     b <- paste("BUY_Enter <- (",q,")",sep = "")
     eval(parse(text = b))
-
+    
     if(BUY_Enter[nrow(BUY_Enter),]){
       repo <- Report(B = TRUE, P = as.numeric(tail(bb, n = 1)[,4]))
     } else {
