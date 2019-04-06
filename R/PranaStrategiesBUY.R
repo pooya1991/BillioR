@@ -1,5 +1,5 @@
 PranaStrategiesBuy <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01-01",EndDate = Sys.Date()){
-  requireNamespace("jsonlite")
+  library(jsonlite)
   library(zoo)
   library(xts)
   library(TTR)
