@@ -5,6 +5,10 @@ PranaStrategiesBuy <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-
   library(TTR)
   library(quantmod)
   library(dplyr)
+  library(MASS)
+  library(Boom)
+  library(BoomSpikeSlab)
+  library(bsts)
   # Ichimoku Indicator Function
   ichimoku <- function(HLC, nFast=9, nMed=26, nSlow=52) {
     turningLine <- (runMax(Hi(HLC), nFast)+runMin(Lo(HLC), nFast))/2
