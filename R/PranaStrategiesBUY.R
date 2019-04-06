@@ -1,4 +1,4 @@
-PranaStrategies <- function(Stg,UID,Share,Timeframe = "m30",StartDate = "2014-01-01",EndDate = Sys.Date(),Vol = 1000,MaxPos = 10,Fee = T,Over = T,ReEnterType = 0,ReEnterAmm = 0){
+PranaStrategies <- function(Stg,Share,Timeframe = "m30",StartDate = "2014-01-01",EndDate = Sys.Date()){
   requireNamespace("jsonlite")
   library(zoo)
   library(xts)
