@@ -133,7 +133,7 @@ PranaStrategiesB <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "201
   }
   
   Report <- function(B, P){
-    res <- list(Buy = B, Price = P)
+    res <- data.frame(Buy = B, Price = P)
     return(res)
   }
   Share <- as.character(Share)
