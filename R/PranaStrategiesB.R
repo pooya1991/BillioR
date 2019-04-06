@@ -146,27 +146,34 @@ PranaStrategiesB <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "201
   x <- as.character(Stg)
   Stg <- jsonlite::fromJSON(x)
   if(Stg$BUY$Status == "Set"){
-    EnRuls <- Stg$BUY$Enter$Rulls
+    EnRuls <- Stg$BUY$Enter$Rules
     EnRels <- Stg$BUY$Enter$Rels
-    n <- length(EnRuls)
+    n <- nrow(EnRuls)
     for (i in 1:n) {
-      m <- length(EnRuls[[i]]$Indicators)
+      m <- length(EnRuls[[1]][[i]]$Indicator)
       qqq <-"Ind_1"
       for (j in 1:m) {
-        Ind <- EnRuls[[i]]$Indicators[[j]][[1]]
-        l <- length(EnRuls[[i]]$Indicators[[j]]$Parameters)
+        Ind <- EnRuls[[1]][[i]]$Indicator[[j]]
+        l <- nrow(EnRuls[[1]][[i]]$Parameters[[j]])
+        indslag <- EnRuls[[1]][[i]]$Lag[[j]]
         qq <- ""
-        for (t in 1:l) {
-          qq <- paste(qq,EnRuls[[i]]$Indicators[[j]]$Parameters[[t]][,2],sep = ",")
+        if(l > 0){
+          for (t in 1:l) {
+            qq <- paste(qq,EnRuls[[1]][[i]]$Parameters[[j]][t,2],sep = ",")
+          }
         }
         k <- which(Indo[,21] == Ind)
-        b <- paste("Ind_",j," <- Indis(bb = bb,FUN = Indo[k,1]",qq, ")[,Indo[k,22]]", sep = "")
+        if(indslag > 0){
+          b <- paste("Ind_",j," <- Lag(Indis(bb = bb,FUN = Indo[k,1]",qq, ")[,Indo[k,22]],",indslag,")", sep = "")
+        } else {
+          b <- paste("Ind_",j," <- Indis(bb = bb,FUN = Indo[k,1]",qq, ")[,Indo[k,22]]", sep = "")
+        }
         eval(parse(text = b))
       }
       m <- m - 1
-      if(EnRuls[[i]]$Math[[m]] == "cross<"){
+      if(EnRuls[[2]][[i]][m] == "cross<"){
         for (s in 1:m) {
-          qqq <- paste(qqq,EnRuls[[i]]$Math[[s]],"Ind_",s+1,sep = "")
+          qqq <- paste(qqq,EnRuls[[2]][[i]][s],"Ind_",s+1,sep = "")
         }
         a1 <- gsub("cross<",">=",qqq)
         b <- paste("c1 <- ",a1,sep = "")
@@ -177,9 +184,9 @@ PranaStrategiesB <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "201
         c2 <- lag(c2,1)
         b <- paste("rull_",i," <- (c1 & c2)",sep = "")
         eval(parse(text = b))
-      }else if(EnRuls[[i]]$Math[[m]] == "cross>"){
+      }else if(EnRuls[[2]][[i]][m] == "cross>"){
         for (s in 1:m) {
-          qqq <- paste(qqq,EnRuls[[i]]$Math[[s]],"Ind_",s+1,sep = "")
+          qqq <- paste(qqq,EnRuls[[2]][[i]][s],"Ind_",s+1,sep = "")
         }
         a1 <- gsub("cross>","<=",qqq)
         b <- paste("c1 <- ",a1,sep = "")
@@ -192,20 +199,20 @@ PranaStrategiesB <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "201
         eval(parse(text = b))
       }else{
         for (s in 1:m) {
-          qqq <- paste(qqq,EnRuls[[i]]$Math[[s]],"Ind_",s+1,sep = "")
+          qqq <- paste(qqq,EnRuls[[2]][[i]][s],"Ind_",s+1,sep = "")
         }
         b <- paste("rull_",i," <- (",qqq,")",sep = "")
         eval(parse(text = b))
       }
     }
     q <- "rull_1"
-    if(length(EnRuls) > 1){
+    if(n > 1){
       n <- n - 1
       for (s in 1:n) {
-        q <- paste(q,EnRels[[s]],"rull_",s+1,sep = "")
+        q <- paste(q,EnRels[s],"rull_",s+1,sep = "")
       }
-      q <- gsub("OR", " || ", q)
-      q <- gsub("AND", " & ", q)
+      q <- gsub("or", " | ", q)
+      q <- gsub("and", " & ", q)
     }
     b <- paste("BUY_Enter <- (",q,")",sep = "")
     eval(parse(text = b))
