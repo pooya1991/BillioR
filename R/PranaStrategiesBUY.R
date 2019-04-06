@@ -70,6 +70,8 @@ PranaStrategiesBuy <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-
     colnames(out) <- c("turnLine", "baseLine", "spanA", "spanB", "plotLagSpan", "laggingSpan", "lagSpanA","lagSpanB")
     return (out)
   }
+  
+  return("Hello")
   # Indicators function
   Indis <- function(bb,FUN,n,m,p,q){
     switch(FUN,
@@ -131,7 +133,7 @@ PranaStrategiesBuy <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-
            ALMA = result <- ALMA(bb[,4],n,m,p)
     )
     
-    return(result)
+    result
   }
   
   Report <- function(B, P){
