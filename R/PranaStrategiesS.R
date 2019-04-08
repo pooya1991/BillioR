@@ -148,7 +148,7 @@ PranaStrategiesS <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01
   x <- as.character(Stg)
   Stg <- jsonlite::fromJSON(x)
   if(Stg$BUY$Status == "Set"){
-    ExRuls <- Stg$BUY$Exit$Rulls
+    ExRuls <- Stg$BUY$Exit$Rules
     ExRels <- Stg$BUY$Exit$Rels
     StpLst <- Stg$BUY$Exit$StopLoss
     TkPrft <- Stg$BUY$Exit$TakeProfit
