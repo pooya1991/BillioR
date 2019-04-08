@@ -134,7 +134,8 @@ PranaStrategiesB <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "201
   
   Report <- function(B, P){
     res <- data.frame(Buy = B, Price = P)
-    return(res)
+    resu <- list(Result = res)
+    return(resu)
   }
   Share <- as.character(Share)
   db <- jsonlite::fromJSON(Share)
