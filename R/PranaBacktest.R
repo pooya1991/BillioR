@@ -502,6 +502,8 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
             Stp <- as.numeric(floor(pri * ((100 - as.numeric(StpLst[1,2]))/100)))
           }else if(StpLst[1,1] == "PriceTick"){
             Stp <- as.numeric(pri - StpLst[1,2])
+          } else {
+            Stp <- 0
           }
         }
         if(is.null(TkPrft)){
@@ -511,6 +513,8 @@ PranaBacktest <- function(Stg,UID,Share,Timeframe = "hourly",StartDate = "2014-0
             Prf <- as.numeric(floor(pri * ((100 + as.numeric(TkPrft[1,2]))/100)))
           }else if(TkPrft[1,1] == "PriceTick"){
             Prf <- as.numeric(pri + TkPrft[1,2])
+          } else {
+            Prf <- as.numeric(pri * 1000)
           }
         }
         baz <- paste(tar,EndDate,sep = "/")
