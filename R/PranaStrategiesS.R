@@ -235,6 +235,8 @@ PranaStrategiesS <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01
           Stp <- as.numeric(floor(pri * ((100 - as.numeric(StpLst[1,2]))/100)))
         }else if(StpLst[1,1] == "PriceTick"){
           Stp <- as.numeric(pri - StpLst[1,2])
+        }else {
+          Stp <- 0
         }
       }
       if(is.null(TkPrft)){
@@ -244,6 +246,8 @@ PranaStrategiesS <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01
           Prf <- as.numeric(floor(pri * ((100 + as.numeric(TkPrft[1,2]))/100)))
         }else if(TkPrft[1,1] == "PriceTick"){
           Prf <- as.numeric(pri + TkPrft[1,2])
+        }else {
+          Prf <- 9999999
         }
       }
       repo$Result$TakeProfit <- Prf
