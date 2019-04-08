@@ -132,8 +132,8 @@ PranaStrategiesS <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01
     result
   }
   
-  Report <- function(B = FALSE, P = 0, Prf = 99999999, Stp = 0, hasRull = FALSE){
-    res <- data.frame(Sell = B, Price = P, TakeProfit = Prf, StopLoss = Stp, HasRull = hasRull)
+  Report <- function(B = FALSE, P = 0, Prf = 99999999, Stp = 0, hasRull = TRUE){
+    res <- data.frame(Sell = B, Price = P, TakeProfit = Prf, StopLoss = Stp, HasRule = hasRull)
     return(res)
   }
   repo <- Report()
