@@ -134,8 +134,8 @@ PranaStrategiesS <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01
   
   Report <- function(B = FALSE, P = 0, Prf = 99999999, Stp = 0, hasRull = FALSE){
     res <- data.frame(Sell = B, Price = P, TakeProfit = Prf, StopLoss = Stp, HasRule = hasRull)
-    res <- list(Result = res)
-    return(res)
+    resu <- list(Result = res)
+    return(resu)
   }
   repo <- Report()
   Share <- as.character(Share)
@@ -246,8 +246,8 @@ PranaStrategiesS <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01
           Prf <- as.numeric(pri + TkPrft[1,2])
         }
       }
-      repo$TakeProfit <- Prf
-      repo$StopLoss <- Stp
+      repo$Result$TakeProfit <- Prf
+      repo$Result$StopLoss <- Stp
     }
     
   }
