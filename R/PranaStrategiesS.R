@@ -149,7 +149,7 @@ PranaStrategiesS <- function(Stg,Share,Timeframe = "hourly",StartDate = "2014-01
   if(Stg$BUY$Status == "Set"){
     ExRuls <- Stg$BUY$Exit$Rulls
     ExRels <- Stg$BUY$Exit$Rels
-    StpLst <- Stg$BUY$Exit$StopLost
+    StpLst <- Stg$BUY$Exit$StopLoss
     TkPrft <- Stg$BUY$Exit$TakeProfit
     if(is.null(ExRuls)) {
       n = 0
