@@ -14,14 +14,20 @@ getting_realtime_minutely <- function() {
   
   service_url <- paste(address, "bourse", finnotech_version, "clients", clientID, service, sep = "/")
   realtime_req <- GET(service_url, add_headers(Authorization = paste("Bearer", token)))
+  realtime_content <- jsonlite::fromJSON(content(realtime_req, "text"),simplifyVector = FALSE)
   if(status_code(realtime_req) == 200) {
-    realtime_content <- jsonlite::fromJSON(content(realtime_req, "text"),simplifyVector = FALSE)
     realtime <- realtime_content[["result"]]
     l_realtime <- lapply(realtime, realtime_parser)
     df_realtime <- do.call(rbind, l_realtime)
     return(df_realtime)
   } else {
-    
+    if(status_code(realtime_req) == 401) {
+      refresh_token(content_token$access_token$refreshToken)
+      load("data/finnotech/token.rda")
+      getting_realtime_minutely()
+    } else {
+      
+    }
   }
 }
 
